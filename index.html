@@ -3,353 +3,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050505">
-<title>Halloween Secret</title>
+<title>HALLOWEEN SECRET</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#030303;color:#eee}
-body{
-  font-family:Georgia,"Times New Roman",serif;
-  display:flex;justify-content:center;overflow-x:hidden;
-  background:radial-gradient(circle at 50% 12%,#291010 0,#0b0707 34%,#020202 78%);
-}
-body:after{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:20;
-  background:repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,transparent 1px 4px);
-}
-.wrap{width:min(720px,100%);padding:20px 18px 55px}
-.screen{min-height:92vh;display:flex;align-items:center;justify-content:center;text-align:center}
-.hidden{display:none!important}
-.red{color:#bd1010;text-shadow:0 0 15px #5b0000}
-.muted{color:#999}
-.kicker{font-size:13px;letter-spacing:4px;color:#aaa}
-h1{font-size:clamp(43px,12vw,82px);line-height:.95;letter-spacing:7px;margin:12px 0 20px}
-.box{
-  border:1px solid #461616;background:rgba(12,4,4,.9);
-  padding:24px 19px;margin:18px 0;box-shadow:0 0 38px rgba(100,0,0,.18)
-}
-.story,.riddle{line-height:1.75}
-.riddle h2{margin:0 0 18px;letter-spacing:4px;font-size:23px}
-.riddle p{margin:12px 0}
-.btn{
-  border:0;background:#970b0b;color:#fff;padding:15px 23px;margin-top:13px;
-  font-family:inherit;font-size:15px;font-weight:bold;letter-spacing:2px;cursor:pointer
-}
-.btn.dark{background:#211010;font-size:12px;padding:10px 15px}
-.btn:active{transform:scale(.98)}
-.top{display:flex;justify-content:space-between;gap:10px;color:#aaa;font-size:13px;letter-spacing:2px}
-.timer{color:#e23;font-weight:bold}
-.progress{height:3px;background:#241010;margin:12px 0 24px}
-.bar{height:100%;width:0;background:#b20d0d;transition:.35s}
-.cipher{
-  display:block;margin:20px auto;padding:18px 10px;max-width:560px;
-  border:1px dashed #5a2525;background:#090505;color:#ddd;
-  font-family:"Courier New",monospace;font-size:clamp(20px,5.8vw,32px);
-  letter-spacing:4px;overflow-wrap:anywhere
-}
-.note{color:#888;font-size:13px;line-height:1.55;margin-top:17px}
-.answer{
-  width:100%;padding:16px 12px;background:#070707;border:1px solid #4b2525;
-  color:#fff;text-align:center;font-family:inherit;font-size:19px;
-  letter-spacing:3px;outline:none;text-transform:uppercase
-}
-.answer:focus{border-color:#bd2020;box-shadow:0 0 12px rgba(180,0,0,.18)}
-.error{min-height:22px;color:#e04b4b;margin-top:8px;font-size:13px}
-.fragmentbar{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:20px 0}
-.chip{
-  border:1px solid #401717;background:#0b0505;padding:7px 10px;
-  color:#aaa;font-size:11px;letter-spacing:2px
-}
-.small{color:#666;font-size:12px;line-height:1.6;margin-top:23px}
-.shake{animation:shake .25s}
-@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
-
-/* visual puzzle */
-.symbol-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px auto;max-width:520px
-}
-.symbol{
-  aspect-ratio:1;border:1px solid #472020;background:#0a0606;color:#ddd;
-  display:flex;align-items:center;justify-content:center;font-size:38px;
-  cursor:pointer;transition:.15s;position:relative
-}
-.symbol:hover{border-color:#a52a2a;transform:translateY(-2px)}
-.symbol.bad{animation:bad .3s;border-color:#d22;color:#d22}
-.symbol.good{animation:good .35s;border-color:#8f8;color:#fff}
-@keyframes bad{30%{transform:translateX(-7px)}60%{transform:translateX(7px)}}
-@keyframes good{50%{transform:scale(1.12)}}
-.visual-msg{min-height:22px;color:#aaa;font-size:13px}
-
-/* final */
-.final-address{font-size:clamp(28px,8vw,49px);letter-spacing:4px;margin:23px 0}
-.final-time{font-size:20px;letter-spacing:3px}
-.map{display:inline-block;margin-top:13px;background:#970b0b;color:#fff;text-decoration:none;padding:14px 20px;letter-spacing:2px}
+:root{--ink:#241d19;--cream:#efe4d0;--paper:#f4ead8;--gold:#b9955b;--wine:#63383b;--muted:#6f6258}
+*{box-sizing:border-box} body{margin:0;background:#181411;color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+#app{min-height:100vh;background:radial-gradient(circle at 70% 20%,#4b4038 0,#241e1a 35%,#111 100%);display:flex;align-items:center;justify-content:center;padding:14px}
+.scene{width:min(1100px,100%);min-height:calc(100vh - 28px);position:relative;overflow:hidden;border-radius:22px;box-shadow:0 25px 80px #0009;background:linear-gradient(120deg,#2b231e,#6c5746 50%,#1a1715);display:flex;align-items:flex-end}
+.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 22%,#f4d59c33,transparent 18%),linear-gradient(180deg,#0001,#0008)}
+.content{position:relative;z-index:2;width:100%;padding:34px clamp(20px,5vw,64px) 38px}
+.kicker{letter-spacing:.24em;text-transform:uppercase;color:#e1c796;font-size:12px}.title{font-size:clamp(34px,7vw,74px);color:#f4ead8;margin:10px 0 12px;text-shadow:0 3px 18px #000}.subtitle{color:#eadfce;max-width:620px;line-height:1.6;font-size:18px}
+.card{background:#efe4d0ee;border:1px solid #d6bb8b;border-radius:18px;padding:24px;max-width:760px;box-shadow:0 14px 45px #0006;margin-top:22px}.card h2{margin-top:0;font-size:25px}.letter{background:#ead9b9;padding:22px;border-radius:10px;box-shadow:inset 0 0 35px #8a673522;line-height:1.75;font-size:18px}.hint{color:var(--muted);font-style:italic}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+button,input{font:inherit}button{border:0;border-radius:12px;padding:12px 17px;background:#5e3b3e;color:#fff3df;cursor:pointer;box-shadow:0 5px 14px #0002}button:hover{filter:brightness(1.1)}button.secondary{background:#756557}input{border:1px solid #bba17a;background:#f7eddb;border-radius:10px;padding:12px 14px;width:min(300px,100%);color:#211a16}
+.option{background:#f7eddb;color:#2a211c;border:1px solid #bda57e}.option.good{outline:3px solid #9d7b43}.option.bad{animation:shake .22s}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.objects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.object{min-height:90px}.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.door{height:190px;border-radius:14px;background:linear-gradient(90deg,#3a2922,#6e4d37,#35241e);color:#e9d6b3;border:1px solid #b48b56;display:flex;align-items:flex-end;justify-content:center;font-size:22px;padding-bottom:18px;position:relative}.door:before{content:"";position:absolute;inset:12px;border:1px solid #b9955b66;border-radius:8px}.door small{position:relative;z-index:1}.symbols{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.symbol{font-size:34px;height:70px;background:#f8edda;color:#332822}.symbol.selected{background:#c9ad78}.reveal{font-size:clamp(28px,6vw,58px);letter-spacing:.12em;text-align:center;color:#5e3b3e;margin:10px 0}.fragment{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#8b6d3e}.progress{position:absolute;top:14px;left:18px;right:18px;display:flex;gap:6px;z-index:4}.dot{height:5px;flex:1;border-radius:10px;background:#ffffff33}.dot.on{background:#d7b878}.timer{position:absolute;top:28px;right:28px;color:#ead9b9;z-index:5;font-size:14px}.map{display:inline-block;text-decoration:none;color:#fff3df;background:#63383b;padding:13px 18px;border-radius:12px;margin-top:14px}.fade{animation:fade .5s}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:650px){.objects,.doors{grid-template-columns:repeat(2,1fr)}.symbols{grid-template-columns:repeat(3,1fr)}.door{height:150px}.content{padding-top:56px}}
 </style>
 </head>
 <body>
-<main class="wrap">
-
-<section id="intro" class="screen">
-  <div>
-    <div class="kicker">31 OTTOBRE · ORE 22:00</div>
-    <h1 class="red">HALLOWEEN<br>SECRET</h1>
-    <div class="box story">
-      <p>La destinazione è stata cancellata.</p>
-      <p>Non troverai un indirizzo scritto da nessuna parte.</p>
-      <p>Ci sono <b>cinque frammenti</b> nascosti dietro cinque prove.</p>
-      <p>Avrai <b>10 minuti</b>. Alcune porte si aprono con la logica. Altre con l'osservazione.</p>
-      <p class="red"><b>Se senti qualcosa alle tue spalle, non voltarti.</b></p>
-    </div>
-    <button class="btn" onclick="start()">ENTRA NEL SEGRETO</button>
-  </div>
-</section>
-
-<section id="game" class="hidden">
-  <div class="top">
-    <span id="counter">ENIGMA 1 / 5</span>
-    <span id="timer" class="timer">10:00</span>
-  </div>
-  <div class="progress"><div id="bar" class="bar"></div></div>
-  <div id="riddle" class="box riddle"></div>
-  <input id="answer" class="answer" autocomplete="off" spellcheck="false" placeholder="INSERISCI LA RISPOSTA">
-  <div id="error" class="error"></div>
-  <button class="btn" onclick="check()">CONFERMA</button>
-  <button class="btn dark" id="voiceBtn" onclick="toggleVoice()">🔊 VOCE ATTIVA</button>
-  <div class="fragmentbar" id="fragmentbar"></div>
-  <div class="small">I frammenti raccolti non formano ancora una frase. Solo alla fine scoprirai cosa significano.</div>
-</section>
-
-<section id="final" class="screen hidden">
-  <div>
-    <div class="kicker red">DESTINAZIONE SBLOCCATA</div>
-    <h1 class="red">HAI TROVATO<br>LA FESTA</h1>
-    <div class="box">
-      <p class="muted">I cinque frammenti finalmente combaciano.</p>
-      <div class="final-address">VIA CADOLINO 6</div>
-      <div class="final-time">31 OTTOBRE · 22:00</div>
-      <p class="red" style="margin-top:24px">La porta ti aspetta.</p>
-      <a class="map" href="https://www.google.com/maps/search/?api=1&query=Via%20Cadolino%206" target="_blank">APRI LA MAPPA</a>
-    </div>
-  </div>
-</section>
-
+<div id="app"></div>
 <script>
-const $=s=>document.querySelector(s);
-let current=0,time=600,interval=null,audioCtx=null,voiceEnabled=true;
-
-function initAudio(){
-  try{
-    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
-    if(audioCtx.state==="suspended")audioCtx.resume();
-  }catch(e){}
-}
-function tone(freq=180,dur=.12,type="sine",vol=.07){
-  if(!audioCtx)return;
-  const o=audioCtx.createOscillator(),g=audioCtx.createGain();
-  o.type=type;o.frequency.value=freq;
-  g.gain.setValueAtTime(vol,audioCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);
-  o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur);
-}
-function whisperNoise(){
-  if(!audioCtx)return;
-  const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*.45,audioCtx.sampleRate);
-  const data=buffer.getChannelData(0);
-  for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*.045;
-  const src=audioCtx.createBufferSource(),g=audioCtx.createGain();
-  src.buffer=buffer;g.gain.value=.22;src.connect(g).connect(audioCtx.destination);src.start();
-}
-function heartbeat(){
-  tone(58,.10,"sine",.12);setTimeout(()=>tone(46,.12,"sine",.10),155);
-}
-function speak(text,rate=.82,pitch=.72){
-  if(!voiceEnabled||!("speechSynthesis"in window))return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang="it-IT";u.rate=rate;u.pitch=pitch;u.volume=1;
-  speechSynthesis.speak(u);
-}
-function narration(n){
-  heartbeat();setTimeout(whisperNoise,170);
-  speak(n);
-}
-
-const puzzles=[
-{
- title:"IL CODICE DELLA PORTA",
- html:`
- <p>Una porta di ferro mostra una sequenza di lettere.</p>
- <div class="cipher">Y L D &nbsp; · &nbsp; F D G R</div>
- <p>Su un foglio vicino è scritto:</p>
- <div class="cipher" style="font-size:18px">«La serratura non guarda avanti. Guarda indietro.»</div>
- <p>Ogni lettera della sequenza è stata spostata di <b>3 posti in avanti</b> nell'alfabeto.</p>
- <p>Riporta <b>solo il primo gruppo</b> indietro di 3 posti.</p>
- <div class="note">Il risultato sarà il primo frammento. Non cercarlo nelle frasi precedenti.</div>`,
- answers:["via"],fragment:"FRAMMENTO I",display:"◆"
-},
-{
- title:"LA RADIO",
- html:`
- <p>La radio si accende da sola. Trasmette quattro gruppi.</p>
- <div class="cipher">-.-. &nbsp;&nbsp; .- &nbsp;&nbsp; -.. &nbsp;&nbsp; ---</div>
- <p>Un'etichetta sul retro dice:</p>
- <p><b>«Punto, linea. Punto, linea. Ogni pausa separa una lettera.»</b></p>
- <p>Usa il <b>codice Morse</b> e unisci le quattro lettere.</p>
- <div class="note">Non devi inserire spazi nella risposta.</div>`,
- answers:["cado"],fragment:"FRAMMENTO II",display:"◆"
-},
-{
- title:"LA STANZA DEI SIMBOLI",
- html:`
- <p>Il pavimento è coperto di simboli. Il diario dice:</p>
- <p><b>«Quattro guardiani hanno il segno che non può essere spezzato.»</b></p>
- <p>Trova e seleziona i <b>4 simboli identici</b>. I falsi reagiranno.</p>
- <div class="symbol-grid" id="symbols"></div>
- <div class="visual-msg" id="visualMsg">Trova i quattro simboli uguali.</div>
- <div class="note">Quando avrai trovato tutti e quattro i guardiani, apparirà il campo della risposta.</div>`,
- answers:["lino"],fragment:"FRAMMENTO III",display:"◆",visual:true
-},
-{
- title:"LE SEI PORTE",
- html:`
- <p>Davanti a te ci sono sei porte. Solo una porta porta il numero corretto.</p>
- <p>Il messaggio dice:</p>
- <div class="cipher" style="font-size:18px">«Non contare ciò che vedi. Conta ciò che manca.<br>Due mani, senza i pollici.»</div>
- <p>Quale porta devi scegliere?</p>
- <div class="symbol-grid" style="grid-template-columns:repeat(3,1fr)" id="doors"></div>
- <div class="visual-msg" id="doorMsg">Scegli una porta.</div>
- <div class="note">Il numero è il quarto frammento.</div>`,
- answers:["6"],fragment:"FRAMMENTO IV",display:"◆",doors:true
-},
-{
- title:"L'ULTIMO BIGLIETTO",
- html:`
- <p>Il quinto frammento non è scritto come una data.</p>
- <div class="box" style="margin:15px 0">
-   <p><b>«La notte dei fantasmi è l'ultima notte di ottobre.»</b></p>
-   <p><b>«Quando la lancetta dei minuti torna in cima, l'appuntamento comincia.»</b></p>
-   <p><b>«La lancetta delle ore guarda il doppio del numero delle dita di una mano.»</b></p>
- </div>
- <p>Inserisci <b>giorno/mese</b> e poi l'ora in formato <b>HH:MM</b>.</p>
- <div class="note">Qui non troverai la risposta scritta: devi ricavare entrambi i valori dagli indizi.</div>`,
- answers:["31/10 22:00","31/10 22.00","31 10 22:00","31 10 22.00","31/10 2200","3110 2200"],
- fragment:"FRAMMENTO V",display:"◆"
-}
-];
-
-const narrations=[
-"Sei entrato. Il tempo è partito. Cinque frammenti sono stati nascosti e nessuno di loro ti dirà da solo dove andare. Risolvi le prove e non fidarti della prima cosa che sembra ovvia.",
-"Hai aperto la prima porta. Il frammento è tuo. Ma la casa ha appena acceso una radio. Qualcuno dall'altra parte sembra sapere che siete qui.",
-"La trasmissione è finita. Adesso il silenzio è peggiore. Nel pavimento ci sono simboli. Quattro di loro sono veri. Gli altri non vogliono essere trovati.",
-"Quattro frammenti sono quasi abbastanza. Davanti a te ci sono sei porte. La risposta è più semplice di quanto sembri, ma devi leggere bene quello che manca.",
-"È rimasto un solo frammento. Questa volta nessuno ti darà un numero direttamente. Guarda le parole, trasformale in numeri e completa l'ultima parte.",
-"Hai ricomposto tutto. Adesso sai dove andare. Ma ricorda: la destinazione è soltanto l'inizio della notte."
-];
-
-function start(){
-  initAudio();
-  $("#intro").classList.add("hidden");
-  $("#game").classList.remove("hidden");
-  current=0;time=600;$("#fragmentbar").innerHTML="";
-  render();
-  setTimeout(()=>narration(narrations[0]),400);
-  clearInterval(interval);interval=setInterval(tick,1000);
-}
-function tick(){
-  if(time<=0)return;
-  time--;
-  const m=Math.floor(time/60),s=time%60;
-  $("#timer").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-  if(time===0){
-    clearInterval(interval);$("#timer").textContent="TEMPO SCADUTO";
-    $("#answer").disabled=true;$("#error").textContent="Il tempo è finito.";
-    speak("Il tempo è finito. La porta rimane chiusa.",.72,.65);
-  }
-}
-function render(){
-  $("#counter").textContent=`ENIGMA ${current+1} / 5`;
-  $("#bar").style.width=(current/5*100)+"%";
-  $("#riddle").innerHTML=`<h2 class="red">${puzzles[current].title}</h2>${puzzles[current].html}`;
-  $("#answer").value="";$("#error").textContent="";
-  if(puzzles[current].visual)setupSymbols();
-  if(puzzles[current].doors)setupDoors();
-  $("#answer").style.display=puzzles[current].visual||puzzles[current].doors?"none":"block";
-  $("#answer").placeholder="INSERISCI LA RISPOSTA";
-  $("#answer").focus();
-}
-function normalize(v){return v.trim().toLowerCase().replace(/\s+/g," ")}
-function success(fragment){
-  tone(330,.08,"sine",.11);setTimeout(()=>tone(520,.18,"sine",.09),90);
-  const chip=document.createElement("div");chip.className="chip";chip.textContent=fragment;
-  $("#fragmentbar").appendChild(chip);
-}
-function advance(){
-  const finished=current;current++;
-  if(current===5){
-    clearInterval(interval);$("#game").classList.add("hidden");$("#final").classList.remove("hidden");
-    setTimeout(()=>narration(narrations[5]),500);return;
-  }
-  render();setTimeout(()=>narration(narrations[finished+1]),350);
-}
-function check(){
-  if(time<=0)return;
-  const value=normalize($("#answer").value);
-  if(puzzles[current].answers.includes(value)){success(puzzles[current].fragment);advance();}
-  else{
-    tone(95,.16,"sawtooth",.08);$("#error").textContent="No. Rileggi l'indizio.";
-    $("#game").classList.remove("shake");void $("#game").offsetWidth;$("#game").classList.add("shake");
-  }
-}
-function setupSymbols(){
-  const grid=$("#symbols");if(!grid)return;
-  const target="☾",symbols=["☾","✦","♢","☠","✦","☾","☾","♢","☾"];
-  let found=0;
-  symbols.forEach((s,idx)=>{
-    const b=document.createElement("button");b.className="symbol";b.textContent=s;
-    b.onclick=()=>{
-      if(b.disabled)return;
-      if(s===target){
-        b.disabled=true;b.classList.add("good");found++;
-        tone(420,.10,"sine",.08);
-        $("#visualMsg").textContent=`Guardiano trovato: ${found}/4`;
-        if(found===4){
-          $("#visualMsg").textContent="I quattro guardiani si sono svegliati. Ora scrivi il nome che hai ricavato dal loro ordine.";
-          $("#answer").style.display="block";$("#answer").focus();
-        }
-      }else{
-        b.classList.add("bad");tone(75,.18,"sawtooth",.10);
-        $("#visualMsg").textContent="Questo simbolo non è un guardiano. Hai perso qualche secondo.";
-        setTimeout(()=>b.classList.remove("bad"),350);
-      }
-    };
-    grid.appendChild(b);
-  });
-}
-function setupDoors(){
-  const grid=$("#doors");if(!grid)return;
-  for(let n=1;n<=6;n++){
-    const b=document.createElement("button");b.className="symbol";b.textContent="PORTA "+n;
-    b.onclick=()=>{
-      if(n===6){
-        b.classList.add("good");tone(430,.1,"sine",.08);
-        $("#doorMsg").textContent="La porta 6 si apre. Il quarto frammento è tuo.";
-        $("#answer").value="6";$("#answer").style.display="block";
-        setTimeout(()=>advance(),500);
-      }else{
-        b.classList.add("bad");tone(70,.2,"sawtooth",.1);
-        $("#doorMsg").textContent="La serratura rifiuta la scelta. Riprova.";
-        setTimeout(()=>b.classList.remove("bad"),350);
-      }
-    };
-    grid.appendChild(b);
-  }
-}
-function toggleVoice(){
-  voiceEnabled=!voiceEnabled;
-  if(!voiceEnabled&&"speechSynthesis"in window)speechSynthesis.cancel();
-  $("#voiceBtn").textContent=voiceEnabled?"🔊 VOCE ATTIVA":"🔇 VOCE DISATTIVATA";
-}
-$("#answer").addEventListener("keydown",e=>{if(e.key==="Enter")check()});
+const app=document.getElementById('app'); let step=0, timer=600, tick=null;
+const fragments={date:"31 OTTOBRE · 22:00", via:"VIA", cado:"CADO", lino:"LINO", num:"6"};
+function startTimer(){clearInterval(tick);tick=setInterval(()=>{timer--;if(timer<=0){timer=0;clearInterval(tick)} document.querySelector('#timer')?.replaceChildren(document.createTextNode(`${String(Math.floor(timer/60)).padStart(2,'0')}:${String(timer%60).padStart(2,'0')}`))},1000)}
+function shell(inner){app.innerHTML=`<div class="scene"><div class="progress">${[0,1,2,3,4].map(i=>`<i class="dot ${i<step?'on':''}"></i>`).join('')}</div><div class="timer" id="timer">10:00</div><div class="content fade">${inner}</div></div>`}
+function intro(){shell(`<div class="kicker">31 OTTOBRE · ORE 22:00</div><div class="title">HALLOWEEN SECRET</div><div class="subtitle">La casa ha nascosto un luogo. Cinque stanze, cinque frammenti. Avete dieci minuti per ricomporre il segreto.</div><div class="card"><h2>La porta è già aperta.</h2><p>Entrate. E cercate con calma.</p><button onclick="step=1;startTimer();p1()">ENTRA NEL SEGRETO</button></div>`)}
+function p1(){shell(`<div class="kicker">STANZA I · LO STUDIO</div><div class="title">Il momento</div><div class="card"><p>Una lettera è aperta sulla scrivania.</p><div class="letter"><b>«Non cercare la data scritta.</b><br>La notte dei fantasmi è l'ultima notte di ottobre.<br><br>Quando entrambe le lancette si incontrano in alto, la casa apre le sue porte.<br><br><span class="hint">Trova il giorno. Trova l'ora.</span></div><div class="row"><button class="option" onclick="this.textContent='31';this.disabled=true;checkDate()">CALENDARIO</button><button class="option" onclick="this.textContent='22:00';this.disabled=true;checkDate()">OROLOGIO</button></div><p id="p1msg"></p></div>`)}
+let d1=0;function checkDate(){d1++;if(d1===2){document.getElementById('p1msg').innerHTML=`<div class="reveal">${fragments.date}</div><div class="fragment">FRAMMENTO I ACQUISITO</div><button onclick="step=2;p2()">CONTINUA</button>`}}
+function p2(){shell(`<div class="kicker">STANZA II · IL RITRATTO</div><div class="title">Guarda meglio</div><div class="card"><p>Una voce sussurra:</p><p><i>«Non seguire ciò che brilla. Segui ciò che si ripete.»</i></p><div class="symbols">${['🌙','🕯️','🌹','👁️','🌙','🗝️','🌹','🌙','🕯️','👁️','🌙','🗝️'].map((s,i)=>`<button class="symbol" onclick="findMoon(this,'${s}')">${s}</button>`).join('')}</div><p id="p2msg"></p></div>`)}
+let moons=0;function findMoon(b,s){if(s==='🌙'&&!b.classList.contains('selected')){b.classList.add('selected');moons++;b.textContent=['L','I','N','O'][moons-1];if(moons===4){document.getElementById('p2msg').innerHTML=`<div class="reveal">LINO</div><div class="fragment">FRAMMENTO II ACQUISITO</div><button onclick="step=3;p3()">CONTINUA</button>}}else if(s!=='🌙'){b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),250)}}
+function p3(){shell(`<div class="kicker">STANZA III · LE CHIAVI</div><div class="title">La stanza delle chiavi</div><div class="card"><p>Sei chiavi. Sei simboli. La stanza custodisce un solo frammento.</p><div class="objects">${['🌙','🐦','🌹','🐍','👁️','🗝️'].map((s,i)=>`<button class="object option" onclick="keyPick(this,${i})">CHIAVE ${i+1}<br><span style="font-size:30px">${s}</span></button>`).join('')}</div><p id="p3msg" class="hint">«La chiave che cerchi non ha una luna. Il corvo è già stato usato.»</p></div>`)}
+function keyPick(b,i){if(i===1){b.classList.add('good');document.getElementById('p3msg').innerHTML=`<div class="reveal">CADO</div><div class="fragment">FRAMMENTO III ACQUISITO</div><button onclick="step=4;p4()">CONTINUA</button>`}else{b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),250)}}
+function p4(){shell(`<div class="kicker">STANZA IV · LA LETTERA</div><div class="title">Le righe mancanti</div><div class="card"><p>Tre righe, ma solo una sequenza apre il cassetto.</p><div class="letter" id="lines"><button class="option" onclick="line(this,'V')">Vedo la strada dalla finestra.</button><button class="option" onclick="line(this,'I')">Il cancello è ancora aperto.</button><button class="option" onclick="line(this,'A')">A volte, di notte, qualcuno passa.</button></div><p id="p4msg"></p></div>`)}
+let seq='';function line(b,l){if(b.disabled)return;b.disabled=true;seq+=l;b.style.opacity=.55;if(seq==='VIA'){document.getElementById('p4msg').innerHTML=`<div class="reveal">VIA</div><div class="fragment">FRAMMENTO IV ACQUISITO</div><button onclick="step=5;p5()">CONTINUA</button>`}else if(!'VIA'.startsWith(seq)){seq='';document.querySelectorAll('#lines button').forEach(x=>{x.disabled=false;x.style.opacity=1});document.getElementById('p4msg').textContent='Le righe tornano a posto...'} }
+function p5(){shell(`<div class="kicker">STANZA V · LE SEI PORTE</div><div class="title">La casa delle sei porte</div><div class="card"><p><i>«Cinque portano da qualche parte. Una porta non ha bisogno di essere aperta.»</i></p><div class="doors">${[1,2,3,4,5,6].map(n=>`<button class="door" onclick="doorPick(this,${n})"><small>PORTA ${n}</small></button>`).join('')}</div><p id="p5msg" class="hint"></p></div>`)}
+function doorPick(b,n){if(n===6){b.style.outline='3px solid #d7b878';document.getElementById('p5msg').innerHTML=`<div class="reveal">6</div><div class="fragment">FRAMMENTO V ACQUISITO</div><button onclick="finale()">RICOMPOSTA IL SEGRETO</button>`}else{b.classList.add('bad');setTimeout(()=>b.classList.remove('bad'),250)}}
+function finale(){clearInterval(tick);app.innerHTML=`<div class="scene"><div class="content fade"><div class="kicker">DESTINAZIONE SBLOCCATA</div><div class="title">Avete trovato la festa.</div><div class="card" style="text-align:center"><div class="reveal">VIA CADOLINO 6</div><p><b>31 OTTOBRE · 22:00</b></p><p>La casa vi aspetta.</p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Via%20Cadolino%206" target="_blank">APRI LA MAPPA</a></div></div></div>`}
+intro();
 </script>
 </body>
 </html>
