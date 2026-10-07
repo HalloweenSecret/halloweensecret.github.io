@@ -3,96 +3,150 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#070609">
-  <title>Il Sigillo — La Notte delle Anime Perdute</title>
+  <meta name="theme-color" content="#050507">
+  <title>IL SIGILLO — La Notte delle Anime Perdute</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="fog fog-a"></div><div class="fog fog-b"></div>
+  <div class="vignette"></div>
+  <div class="fog fog-a"></div>
+  <div class="fog fog-b"></div>
   <div class="grain"></div>
+
   <main id="app">
     <section class="screen active" id="intro">
       <div class="eyebrow">HALLOWEEN • ACCESSO RISERVATO</div>
-      <h1>Il Sigillo</h1>
+      <div class="seal-mark">✦</div>
+      <h1>IL SIGILLO</h1>
       <p class="subtitle">La Notte delle Anime Perdute</p>
-      <div class="seal"><span>†</span></div>
-      <audio id="audioIntro" controls preload="metadata" class="audio"><source src="audio/audio-01.mp3" type="audio/mpeg"></audio><p class="story">L'invito è stato strappato. Il luogo della congrega è stato cancellato. Quattro prove custodiscono la strada.</p>
-      <button class="primary" data-go="scene1">ENTRA NELLA NOTTE</button>
-      <p class="tiny">Gioco individuale · circa 5–10 minuti</p>
+      <div class="divider"></div>
+      <p class="story">Il luogo della notte è stato cancellato. Cinque prove custodiscono ciò che resta. Superale tutte. Solo allora il sigillo mostrerà la strada.</p>
+      <audio id="introAudio" controls preload="none" class="audio"><source src="audio/intro.mp3" type="audio/mpeg"></audio>
+      <button class="primary" id="enterButton">ENTRA NELLA NOTTE</button>
+      <p class="tiny">Gioco individuale • circa 5–10 minuti</p>
     </section>
 
-    <section class="screen" id="scene1">
-      <div class="progress"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+    <section class="screen" id="enigma-1">
+      <div class="topline"><span id="progress">PROVA 1 / 5</span><span>IL CONTO DEI MORTI</span></div>
       <div class="eyebrow">PRIMA PROVA</div>
-      <h2>Il messaggio del morto</h2>
-      <audio controls preload="metadata" class="audio"><source src="audio/audio-02.mp3" type="audio/mpeg"></audio><p class="narrative">Una voce ti chiama dal buio. Sul muro compaiono sei righe. Qualcosa si nasconde all'inizio.</p>
-      <div class="parchment" id="acrostic">
-        <p><b>M</b>olti sono entrati. Ora nessuno vuole uscire.</p>
-        <p><b>O</b>gni porta conduce sempre più in profondità.</p>
-        <p><b>R</b>icorda: ciò che vedi non è tutto ciò che esiste.</p>
-        <p><b>S</b>otto la luna, persino le ombre hanno un nome.</p>
-        <p><b>E</b>vita di fidarti della prima risposta.</p>
-        <p><b>T</b>rova ciò che è scritto prima di continuare.</p>
-      </div>
-      <div class="hint-box"><span>INDIZIO</span><button class="textbtn" id="hint1">Mostra</button><p id="hintText1" class="hidden">Guarda le prime lettere delle sei righe.</p></div>
-      <div class="answer"><input id="answer1" autocomplete="off" placeholder="Inserisci la parola"><button class="primary small" id="check1">Sblocca</button></div>
-      <p class="error" id="error1"></p>
-    </section>
-
-    <section class="screen" id="scene2">
-      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
-      <div class="eyebrow">SECONDA PROVA</div>
-      <h2>Il conto dei morti</h2>
-      <audio controls preload="metadata" class="audio"><source src="audio/audio-03.mp3" type="audio/mpeg"></audio><p class="narrative">Le quattro reliquie hanno un valore. Risolvi le equazioni e inserisci il risultato finale.</p>
+      <h2>Il Conto dei Morti</h2>
+      <p class="narrative">Ogni reliquia custodisce un numero. Trova i quattro valori, poi risolvi l'ultima riga.</p>
+      <audio controls preload="none" class="audio"><source src="audio/enigma-1.mp3" type="audio/mpeg"></audio>
       <div class="equations">
-        <div>☠️ + ☠️ + 🕷️ = <b>13</b></div>
-        <div>🕷️ + 🦇 = <b>9</b></div>
-        <div>🦇 × 🩸 = <b>12</b></div>
-        <div>☠️ + 🩸 = <b>?</b></div>
+        <div>☠️ + ☠️ + 🕷️ <b>= 13</b></div>
+        <div>🕷️ + 🫀 <b>= 9</b></div>
+        <div>🫀 × 🩸 <b>= 12</b></div>
+        <div>☠️ + 🩸 <b>= ?</b></div>
       </div>
-      <div class="hint-box"><span>INDIZIO</span><button class="textbtn" id="hint2">Mostra</button><p id="hintText2" class="hidden">Trova prima il valore del teschio, poi del ragno, del pipistrello e infine della goccia.</p></div>
-      <div class="answer"><input id="answer2" inputmode="numeric" autocomplete="off" placeholder="Numero"><button class="primary small" id="check2">Sblocca</button></div>
-      <p class="error" id="error2"></p>
+      <button class="hint-button" data-hint="hint-1">MOSTRA INDIZIO</button>
+      <p class="hint hidden" id="hint-1">Dal primo conto ricavi il teschio. Poi usa il secondo e il terzo per trovare gli altri due valori.</p>
+      <form class="answer-form" data-answer="7">
+        <input inputmode="numeric" autocomplete="off" placeholder="Inserisci il numero" aria-label="Risposta prova 1">
+        <button class="primary small">SBLOCCA</button>
+      </form>
+      <p class="feedback"></p>
     </section>
 
-    <section class="screen" id="scene3">
-      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+    <section class="screen" id="enigma-2">
+      <div class="topline"><span>PROVA 2 / 5</span><span>NON FIDARTI DEI TUOI OCCHI</span></div>
+      <div class="eyebrow">SECONDA PROVA</div>
+      <h2>Non Fidarti dei Tuoi Occhi</h2>
+      <p class="narrative">Nove simboli. Quattro coppie sono perfette. Uno non appartiene alla schiera. Toccalo.</p>
+      <audio controls preload="none" class="audio"><source src="audio/enigma-2.mp3" type="audio/mpeg"></audio>
+      <div class="symbol-grid" id="visualGrid" aria-label="Griglia dei simboli">
+        <button class="symbol-choice" data-answer="NO">☽</button>
+        <button class="symbol-choice" data-answer="NO">☠</button>
+        <button class="symbol-choice" data-answer="NO">✦</button>
+        <button class="symbol-choice" data-answer="NO">♄</button>
+        <button class="symbol-choice" data-answer="YES">♆</button>
+        <button class="symbol-choice" data-answer="NO">☠</button>
+        <button class="symbol-choice" data-answer="NO">☽</button>
+        <button class="symbol-choice" data-answer="NO">✦</button>
+        <button class="symbol-choice" data-answer="NO">♄</button>
+      </div>
+      <button class="hint-button" data-hint="hint-2">MOSTRA INDIZIO</button>
+      <p class="hint hidden" id="hint-2">Quattro simboli compaiono esattamente due volte. Uno compare una sola volta.</p>
+      <p class="feedback"></p>
+    </section>
+
+    <section class="screen" id="enigma-3">
+      <div class="topline"><span>PROVA 3 / 5</span><span>IL SIGILLO SPEZZATO</span></div>
       <div class="eyebrow">TERZA PROVA</div>
-      <h2>Non fidarti dei tuoi occhi</h2>
-      <audio controls preload="metadata" class="audio"><source src="audio/audio-04.mp3" type="audio/mpeg"></audio><p class="narrative">Nove simboli. Uno solo nasconde la traccia. Tocca quello che non appartiene al disegno.</p>
-      <div class="grid" id="symbolGrid"></div>
-      <div class="hint-box"><span>INDIZIO</span><button class="textbtn" id="hint3">Mostra</button><p id="hintText3" class="hidden">Conta le ripetizioni: quasi tutti i simboli compaiono due volte. Uno è solo.</p></div>
-      <p class="selected" id="selectedSymbol">Nessuna scelta.</p>
-      <button class="primary" id="check3" disabled>Conferma il simbolo</button>
-      <p class="error" id="error3"></p>
+      <h2>Il Sigillo Spezzato</h2>
+      <p class="narrative">L'intruso della prova precedente ha lasciato un frammento. Il sigillo lo riconosce: scegli il frammento che porta lo stesso simbolo.</p>
+      <audio controls preload="none" class="audio"><source src="audio/enigma-3.mp3" type="audio/mpeg"></audio>
+      <div class="fragment-grid">
+        <button class="fragment-choice" data-answer="NO"><span>☽</span><small>FRAMMENTO I</small></button>
+        <button class="fragment-choice" data-answer="NO"><span>♄</span><small>FRAMMENTO II</small></button>
+        <button class="fragment-choice" data-answer="YES"><span>♆</span><small>FRAMMENTO III</small></button>
+        <button class="fragment-choice" data-answer="NO"><span>✦</span><small>FRAMMENTO IV</small></button>
+      </div>
+      <button class="hint-button" data-hint="hint-3">MOSTRA INDIZIO</button>
+      <p class="hint hidden" id="hint-3">Non cercare un nuovo codice. Usa la risposta della seconda prova: il simbolo comparso una sola volta.</p>
+      <p class="feedback"></p>
     </section>
 
-    <section class="screen" id="scene4">
-      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
-      <div class="eyebrow">IL SIGILLO</div>
-      <h2>La porta ricorda</h2>
-      <audio controls preload="metadata" class="audio"><source src="audio/audio-05.mp3" type="audio/mpeg"></audio><p class="narrative">Hai raccolto tre frammenti. Ricomponili nel loro ordine.</p>
-      <div class="fragments"><span>M</span><span>7</span><span>☠</span></div>
-      <p class="code-note">La serratura vuole i tre segni nell'ordine delle prove.</p>
-      <div class="answer"><input id="answer4" maxlength="3" autocomplete="off" placeholder="___"><button class="primary small" id="check4">Apri</button></div>
-      <p class="error" id="error4"></p>
+    <section class="screen" id="enigma-4">
+      <div class="topline"><span>PROVA 4 / 5</span><span>LA STANZA DELLE OMBRE</span></div>
+      <div class="eyebrow">QUARTA PROVA</div>
+      <h2>La Stanza delle Ombre</h2>
+      <p class="narrative">Quattro presenze. Tre mentono. Una sola conosce la verità.</p>
+      <audio controls preload="none" class="audio"><source src="audio/enigma-4.mp3" type="audio/mpeg"></audio>
+      <div class="shadow-clues">
+        <p>«La verità non si trova nella luce.»</p>
+        <p>«La presenza giusta non guarda verso l'alto.»</p>
+        <p>«Il volto che sorride non dice il vero.»</p>
+      </div>
+      <div class="shadow-grid">
+        <button class="shadow-choice" data-answer="NO"><span>◉</span><small>OMBRA I<br>guarda in alto</small></button>
+        <button class="shadow-choice" data-answer="YES"><span>◒</span><small>OMBRA II<br>sguardo basso</small></button>
+        <button class="shadow-choice" data-answer="NO"><span>☻</span><small>OMBRA III<br>sorride</small></button>
+        <button class="shadow-choice" data-answer="NO"><span>☼</span><small>OMBRA IV<br>nella luce</small></button>
+      </div>
+      <button class="hint-button" data-hint="hint-4">MOSTRA INDIZIO</button>
+      <p class="hint hidden" id="hint-4">Elimina prima chi guarda in alto. Poi chi sorride. Infine chi è nella luce.</p>
+      <p class="feedback"></p>
+    </section>
+
+    <section class="screen" id="enigma-5">
+      <div class="topline"><span>PROVA 5 / 5</span><span>LE CINQUE CANDELE</span></div>
+      <div class="eyebrow">ULTIMA PROVA</div>
+      <h2>Le Cinque Candele</h2>
+      <p class="narrative">Cinque fiamme. Quattro mentono. Una sola conosce la strada. Non devi ordinarle: devi riconoscerla.</p>
+      <audio controls preload="none" class="audio"><source src="audio/enigma-5.mp3" type="audio/mpeg"></audio>
+      <div class="candle-clues">
+        <p>La fiamma vera <b>non è agli estremi</b>.</p>
+        <p>È <b>immediatamente a destra</b> della candela nera.</p>
+        <p>La candela nera è <b>al centro</b>.</p>
+      </div>
+      <div class="candle-grid">
+        <button class="candle-choice" data-answer="NO"><span>🕯️</span><small>I</small></button>
+        <button class="candle-choice" data-answer="NO"><span>🕯️</span><small>II</small></button>
+        <button class="candle-choice" data-answer="NO" data-black="true"><span>🕯️</span><small>III</small></button>
+        <button class="candle-choice" data-answer="YES"><span>🕯️</span><small>IV</small></button>
+        <button class="candle-choice" data-answer="NO"><span>🕯️</span><small>V</small></button>
+      </div>
+      <button class="hint-button" data-hint="hint-5">MOSTRA INDIZIO</button>
+      <p class="hint hidden" id="hint-5">Se la nera è al centro, la fiamma vera deve essere subito alla sua destra.</p>
+      <p class="feedback"></p>
     </section>
 
     <section class="screen finale" id="finale">
-      <div class="eyebrow">SIGILLO SPEZZATO</div>
-      <div class="burst">✦</div>
-      <h2>Hai trovato il luogo.</h2>
-      <p class="final-copy">La porta si aprirà. La notte ti aspetta.</p>
-      <audio controls preload="metadata" class="audio"><source src="audio/audio-06.mp3" type="audio/mpeg"></audio><div class="location-card">
-        <span>📍 IL LUOGO DELLA CONGREGA</span>
-        <strong id="address">—</strong>
-        <small id="time">22:00</small>
+      <div class="eyebrow">IL SIGILLO È SPEZZATO</div>
+      <div class="final-seal">✦</div>
+      <h2>HAI TROVATO IL LUOGO.</h2>
+      <p class="final-copy">Il sigillo ha ceduto. Ora la strada può essere mostrata.</p>
+      <audio controls preload="none" class="audio"><source src="audio/finale.mp3" type="audio/mpeg"></audio>
+      <div class="location-card">
+        <span>📍 IL LUOGO DELLA NOTTE</span>
+        <strong>Via Cadolino, Nettuno</strong>
+        <small>ORE 22:00</small>
       </div>
-      <div class="namebox">
-        <label for="nickname">Firma la tua sopravvivenza (facoltativo)</label>
-        <div class="answer"><input id="nickname" maxlength="20" placeholder="Nickname"><button class="primary small" id="saveName">Salva</button></div>
+      <div class="final-actions">
+        <a class="primary map-button" id="mapButton" href="#" target="_blank" rel="noopener">PORTAMI ALLA FESTA</a>
+        <button class="secondary" id="copyAddress">COPIA INDIRIZZO</button>
       </div>
-      <p class="tiny" id="saved">Non condividere il luogo prima che tutti abbiano giocato. 🩸</p>
+      <p class="tiny" id="copyStatus">Il luogo resta nascosto fino alla fine. Ora è tuo.</p>
     </section>
   </main>
   <script src="script.js"></script>

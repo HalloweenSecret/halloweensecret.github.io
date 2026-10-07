@@ -1,27 +1,93 @@
-// La progressione è interamente client-side: ideale per GitHub Pages.
-// Nota: un sito statico NON può nascondere davvero un segreto dal codice sorgente.
-const screens=[...document.querySelectorAll('.screen')];
-function go(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo(0,0)}
-document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
-const hint=(btn,txt)=>document.getElementById(btn).addEventListener('click',()=>document.getElementById(txt).classList.toggle('hidden'));
-hint('hint1','hintText1');hint('hint2','hintText2');hint('hint3','hintText3');
-function check(input,answer,error,next,success){const v=document.getElementById(input).value.trim().toUpperCase();if(v===answer){if(success)success();go(next)}else{document.getElementById(error).textContent='La serratura non si muove. Riprova.'}}
-document.getElementById('check1').onclick=()=>check('answer1','MORSET','error1','scene2');
-document.getElementById('answer1').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('check1').click()});
-document.getElementById('check2').onclick=()=>check('answer2','8','error2','scene3');
-document.getElementById('answer2').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('check2').click()});
-const symbols=['☠️','🕷️','🦇','🩸','🕯️','☠️','🕷️','🦇','🩸'];
-// La candela è l'unico simbolo singolo: il giocatore deve trovare quello che non ha coppia.
-const grid=document.getElementById('symbolGrid');let chosen='';
-symbols.forEach((s,i)=>{const b=document.createElement('button');b.className='symbol';b.textContent=s;b.setAttribute('aria-label','simbolo');b.onclick=()=>{document.querySelectorAll('.symbol').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');chosen=s;document.getElementById('selectedSymbol').textContent='Hai scelto: '+s;document.getElementById('check3').disabled=false};grid.appendChild(b)});
-// Correzione: per mantenere l'enigma univoco, sostituiamo la quinta casella con la candela unica.
-// Le coppie sono teschio, ragno, pipistrello e sangue; candela compare una sola volta.
-document.getElementById('check3').onclick=()=>{if(chosen==='🕯️'){go('scene4')}else document.getElementById('error3').textContent='Non è questo il simbolo solitario.'};
-document.getElementById('check4').onclick=()=>check('answer4','M7☠','error4','finale',()=>revealFinal());
-document.getElementById('answer4').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('check4').click()});
-function revealFinal(){
-  // Offuscamento leggero per evitare che l'indirizzo sia visibile a colpo d'occhio.
-  const p=[86,105,97,32,67,97,100,111,108,105,110,111,44,32,78,101,116,116,117,110,111];
-  document.getElementById('address').textContent=String.fromCharCode(...p).toUpperCase();
-}
-document.getElementById('saveName').onclick=()=>{const n=document.getElementById('nickname').value.trim();if(n){document.getElementById('saved').textContent='☠ '+n+' — sopravvissuto alla notte. Non condividere il luogo prima che tutti abbiano giocato.';localStorage.setItem('halloweenNickname',n)}};
+(() => {
+  const screens = [...document.querySelectorAll('.screen')];
+  const normalize = v => String(v ?? '').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  let current = 1;
+
+  const show = id => {
+    screens.forEach(s => s.classList.remove('active'));
+    const next = document.getElementById(id);
+    if (next) next.classList.add('active');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+
+  const feedback = (screen, message, ok = false) => {
+    const box = screen.querySelector('.feedback');
+    if (!box) return;
+    box.textContent = message;
+    box.className = `feedback${ok ? ' success' : ''}`;
+  };
+
+  const advance = () => {
+    if (current < 5) {
+      current += 1;
+      show(`enigma-${current}`);
+    } else {
+      show('finale');
+    }
+  };
+
+  document.getElementById('enterButton').addEventListener('click', () => {
+    current = 1;
+    show('enigma-1');
+  });
+
+  document.querySelectorAll('.answer-form').forEach(form => {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const screen = form.closest('.screen');
+      const value = normalize(form.querySelector('input').value);
+      const expected = normalize(form.dataset.answer);
+      if (value === expected) {
+        feedback(screen, '✓ Il sigillo ha riconosciuto la risposta.', true);
+        setTimeout(advance, 650);
+      } else {
+        feedback(screen, '✕ Non è la chiave. Riprova.');
+      }
+    });
+  });
+
+  document.querySelectorAll('.hint-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const hint = document.getElementById(button.dataset.hint);
+      if (!hint) return;
+      hint.classList.toggle('hidden');
+      button.textContent = hint.classList.contains('hidden') ? 'MOSTRA INDIZIO' : 'NASCONDI INDIZIO';
+    });
+  });
+
+  const choiceHandler = selector => {
+    document.querySelectorAll(selector).forEach(button => {
+      button.addEventListener('click', () => {
+        const screen = button.closest('.screen');
+        document.querySelectorAll(`${selector}.selected`).forEach(x => x.classList.remove('selected'));
+        button.classList.add('selected');
+        const correct = button.dataset.answer === 'YES';
+        if (correct) {
+          feedback(screen, '✓ Il sigillo ha riconosciuto il frammento.', true);
+          setTimeout(advance, 650);
+        } else {
+          feedback(screen, '✕ Questo simbolo non appartiene alla verità.');
+        }
+      });
+    });
+  };
+
+  choiceHandler('.symbol-choice');
+  choiceHandler('.fragment-choice');
+  choiceHandler('.shadow-choice');
+  choiceHandler('.candle-choice');
+
+  const address = 'Via Cadolino, Nettuno';
+  const mapButton = document.getElementById('mapButton');
+  mapButton.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+
+  document.getElementById('copyAddress').addEventListener('click', async () => {
+    const status = document.getElementById('copyStatus');
+    try {
+      await navigator.clipboard.writeText(`${address} — ore 22:00`);
+      status.textContent = '✓ INDIRIZZO COPIATO';
+    } catch {
+      status.textContent = address + ' — ore 22:00';
+    }
+  });
+})();
