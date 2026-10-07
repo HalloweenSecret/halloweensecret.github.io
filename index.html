@@ -2,301 +2,107 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>HALLOWEEN SECRET</title>
 <style>
-:root{
-  --black:#090708;
-  --charcoal:#151012;
-  --wine:#3b0d18;
-  --blood:#6e1724;
-  --burgundy:#8e2633;
-  --bone:#e7dcc8;
-  --muted:#a89b8a;
-  --gold:#b49762;
-  --gold2:#d0b67b;
-}
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#080607;color:var(--bone);font-family:Georgia,"Times New Roman",serif}
-body{overflow-x:hidden}
+html,body{margin:0;width:100%;min-height:100%;background:#070608;color:#eee4d5}
+body{font-family:Georgia,'Times New Roman',serif}
+#app{min-height:100vh}
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:
+radial-gradient(circle at 50% 28%,rgba(105,20,35,.48),transparent 28%),
+radial-gradient(circle at 50% 70%,rgba(45,8,16,.65),transparent 48%),
+linear-gradient(145deg,#050506,#17090d 52%,#050506);position:relative;overflow:hidden}
+.screen:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 130px #000}
+.wrap{position:relative;z-index:2;width:min(700px,100%);text-align:center}
+.kicker{color:#b99a61;text-transform:uppercase;letter-spacing:.35em;font-size:10px;margin-bottom:18px}
+h1{font-size:clamp(46px,13vw,88px);line-height:.86;letter-spacing:.08em;margin:0;text-transform:uppercase;text-shadow:0 0 28px rgba(142,38,53,.65)}
+.subtitle{color:#9c8d7e;letter-spacing:.28em;font-size:11px;margin:25px 0 42px}
+.card{background:rgba(13,8,10,.93);border:1px solid #542530;padding:26px;box-shadow:0 25px 80px #000}
+p{color:#ad9f90;line-height:1.7;font-size:15px}
+b{color:#eadfce}
 button{font:inherit}
-#app{min-height:100vh;position:relative;overflow:hidden}
-.screen{
-  min-height:100vh;display:none;position:relative;padding:28px 20px 36px;
-  background:
-    radial-gradient(circle at 50% 24%,rgba(108,35,43,.28),transparent 34%),
-    radial-gradient(circle at 50% 100%,rgba(49,11,19,.7),transparent 48%),
-    linear-gradient(145deg,#090708 0%,#171013 52%,#080607 100%);
-}
-.screen.active{display:flex;flex-direction:column}
-.screen:before{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;
-  background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 5px);
-}
-.vignette{position:absolute;inset:-5%;pointer-events:none;background:radial-gradient(circle,transparent 38%,rgba(0,0,0,.72) 100%);z-index:1}
-.content{position:relative;z-index:2;width:min(680px,100%);margin:auto}
-.kicker{letter-spacing:.38em;text-transform:uppercase;color:var(--gold);font-size:11px;text-align:center;margin-bottom:20px}
-.title{
-  text-align:center;font-size:clamp(42px,11vw,82px);line-height:.9;letter-spacing:.06em;
-  color:#efe5d4;text-shadow:0 0 22px rgba(142,38,51,.45),0 3px 0 #241017;
-  margin:0;text-transform:uppercase
-}
-.subtitle{text-align:center;color:#a99d8d;letter-spacing:.28em;font-size:12px;margin:20px 0 44px;text-transform:uppercase}
-.rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:22px 0 30px;opacity:.65}
-.open-btn,.choice{
-  border:1px solid rgba(180,151,98,.65);background:linear-gradient(180deg,#42131d,#250b12);
-  color:#f0e4d1;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
-  box-shadow:0 12px 35px rgba(0,0,0,.45),inset 0 0 20px rgba(180,151,98,.06);
-  transition:.2s
-}
-.open-btn{display:block;margin:0 auto;padding:17px 28px;font-size:12px}
-.open-btn:hover,.choice:hover{border-color:var(--gold2);transform:translateY(-1px);filter:brightness(1.12)}
-.date{margin-top:28px;text-align:center;color:#776c60;font-size:11px;letter-spacing:.2em}
-.scene{
-  min-height:250px;border:1px solid rgba(180,151,98,.25);position:relative;overflow:hidden;
-  background:
-    radial-gradient(circle at 50% 35%,rgba(160,116,63,.22),transparent 13%),
-    linear-gradient(180deg,rgba(57,25,26,.85),rgba(10,8,9,.98));
-  box-shadow:inset 0 0 80px rgba(0,0,0,.8),0 18px 50px rgba(0,0,0,.35);
-  margin-bottom:25px
-}
-.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.5),transparent 45%,rgba(0,0,0,.6))}
-.room-title{position:absolute;top:20px;left:20px;z-index:3;color:var(--gold);font-size:11px;letter-spacing:.28em;text-transform:uppercase}
-.candle{position:absolute;width:14px;height:55px;background:#d6c39f;bottom:43px;left:50%;transform:translateX(-50%);z-index:2;box-shadow:0 0 25px rgba(222,170,82,.25)}
-.candle:before{content:"";position:absolute;width:10px;height:20px;border-radius:50%;background:#e3a93e;top:-19px;left:2px;box-shadow:0 0 18px 7px rgba(224,155,43,.38)}
-.desk{position:absolute;left:10%;right:10%;height:20px;bottom:40px;background:#251616;border:1px solid #573d2d;z-index:2;box-shadow:0 12px 0 #130c0d}
-.clock{position:absolute;width:86px;height:86px;border:3px solid #8b7048;border-radius:50%;right:16%;top:65px;z-index:2;background:#171012;box-shadow:0 0 30px rgba(181,137,72,.12)}
-.clock:before,.clock:after{content:"";position:absolute;left:50%;top:50%;width:3px;background:#d0b67b;transform-origin:50% 100%;border-radius:2px}
-.clock:before{height:28px;transform:translate(-50%,-100%) rotate(0deg)}
-.clock:after{height:22px;transform:translate(-50%,-100%) rotate(90deg)}
-.frame{position:absolute;left:12%;top:65px;width:100px;height:135px;border:7px solid #6d5337;background:linear-gradient(145deg,#211416,#090708);z-index:2;box-shadow:0 0 25px rgba(0,0,0,.7)}
-.portrait-head{width:44px;height:55px;border-radius:50%;background:#80695d;position:absolute;top:22px;left:21px;opacity:.72}
-.portrait-body{width:68px;height:65px;border-radius:50% 50% 0 0;background:#3d2930;position:absolute;bottom:10px;left:9px}
-.progress{display:flex;gap:6px;justify-content:center;margin:0 0 22px}
-.dot{width:8px;height:8px;border-radius:50%;border:1px solid #654653;background:#180d11}
-.dot.done{background:var(--burgundy);box-shadow:0 0 10px rgba(142,38,51,.6)}
-.card{
-  background:linear-gradient(145deg,rgba(29,18,20,.96),rgba(13,10,11,.96));
-  border:1px solid rgba(180,151,98,.25);padding:25px;box-shadow:0 20px 55px rgba(0,0,0,.45)
-}
-.h{font-size:24px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px;color:#eadfcd}
-.p{color:#a99d8e;line-height:1.65;font-size:15px;margin:0 0 20px}
-.voice{border-left:2px solid var(--blood);padding:10px 0 10px 15px;color:#cbbdac;font-style:italic;line-height:1.6;margin:18px 0 22px}
-.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.choice{padding:16px 10px;font-size:12px;min-height:54px}
-.feedback{min-height:28px;margin-top:16px;color:var(--gold2);font-size:13px;line-height:1.5}
-.next{margin-top:18px;width:100%}
-.small{font-size:10px;letter-spacing:.18em;color:#776b5e;text-transform:uppercase}
-.letters{display:flex;justify-content:center;gap:9px;margin:20px 0}
-.letter{width:46px;height:52px;border:1px solid rgba(180,151,98,.35);display:grid;place-items:center;color:#e7dcc8;background:#120c0f;font-size:23px}
+.enter{display:block;width:100%;padding:16px;margin-top:24px;border:1px solid #b99a61;background:linear-gradient(#45121d,#21090f);color:#eee4d5;letter-spacing:.18em;text-transform:uppercase;font-size:11px}
+.enter:active{transform:scale(.99)}
 .hidden{display:none!important}
-.final-address{text-align:center;font-size:clamp(30px,8vw,55px);line-height:1.05;letter-spacing:.12em;color:#eee1ce;text-transform:uppercase;margin:24px 0 12px;text-shadow:0 0 22px rgba(142,38,51,.4)}
-.final-date{text-align:center;color:var(--gold2);letter-spacing:.25em;font-size:13px;margin-bottom:28px}
-.maps{display:block;text-decoration:none;text-align:center}
-@media(max-width:500px){.choices{grid-template-columns:1fr}.scene{min-height:235px}.card{padding:20px}}
-
-.voiceBtn{display:inline-flex;align-items:center;gap:8px;margin:0 auto 18px;padding:10px 14px;background:#160b0e;border:1px solid rgba(180,151,98,.35);color:#cdbb9c;letter-spacing:.12em;text-transform:uppercase;font-size:10px;cursor:pointer}
-.voiceBtn .mic{font-size:14px}
-.discovery{margin-top:20px;padding:16px;border:1px solid rgba(180,151,98,.38);background:linear-gradient(145deg,#2a0b12,#10090b);text-align:center}
-.discovery .found{font-size:10px;letter-spacing:.25em;color:#9c8664;text-transform:uppercase}
-.discovery strong{display:block;margin-top:7px;color:#efe2cf;font-size:25px;letter-spacing:.15em}
+.room{height:260px;margin-bottom:20px;position:relative;overflow:hidden;border:1px solid #53362e;background:linear-gradient(#190f14,#080708);box-shadow:inset 0 0 80px #000}
+.room:before{content:"";position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(221,204,171,.14);left:50%;top:38px;transform:translateX(-50%);box-shadow:0 0 70px rgba(221,204,171,.12)}
+.candle{position:absolute;width:12px;height:48px;bottom:42px;left:50%;background:#c9b998}.candle:before{content:"";position:absolute;width:9px;height:17px;top:-16px;left:2px;background:#d28b2d;border-radius:50%;box-shadow:0 0 25px 8px rgba(210,139,45,.3)}
+.table{position:absolute;bottom:30px;left:12%;right:12%;height:17px;background:#2a1718;border:1px solid #694932}
+.sceneTitle{position:absolute;top:14px;left:15px;color:#b99a61;letter-spacing:.3em;font-size:10px}
+.content{text-align:left}
+.progress{text-align:center;margin-bottom:15px}.dot{display:inline-block;width:8px;height:8px;border:1px solid #68323d;border-radius:50%;margin:0 3px}.dot.on{background:#8f2635}
+h2{font-size:25px;letter-spacing:.08em;text-transform:uppercase;margin:4px 0 10px}
+.voice{border-left:2px solid #7b1e2d;padding:8px 0 8px 14px;color:#c9bbab;font-style:italic;line-height:1.6}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}
+.action{min-height:65px;background:#0c0809;border:1px solid #54313a;color:#ddcfbc;padding:10px}
+.feedback{color:#c9a96c;min-height:35px;margin-top:15px;line-height:1.5}
+.found{border:1px solid #7b5b38;background:#1c0c10;text-align:center;padding:16px;margin-top:16px}
+.found small{display:block;color:#a78c63;letter-spacing:.25em;font-size:9px;text-transform:uppercase}.found strong{display:block;font-size:26px;letter-spacing:.13em;margin:7px}
+.next{width:100%;padding:13px;border:1px solid #a98955;background:#3c1019;color:#eee1cf;letter-spacing:.15em}
+.final{font-size:clamp(28px,8vw,52px);letter-spacing:.12em;color:#eee2d0}
+@media(max-width:520px){.actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div id="app">
-
-<section id="intro" class="screen active">
-<div class="vignette"></div><div class="content">
-<div class="kicker">Un invito che non dovevate trovare</div>
-<h1 class="title">Halloween<br>Secret</h1>
-<div class="subtitle">31 Ottobre · 22:00</div>
-<div class="rule"></div>
-<p class="p" style="text-align:center;max-width:470px;margin:0 auto 28px">
-Cinque stanze. Cinque frammenti. Una destinazione.<br>
-<strong style="color:#d4c6b3">Non fidatevi della prima cosa che vedete.</strong>
-</p>
-<button class="open-btn" onclick="startGame()">ENTRA NELLA CASA</button>
-<div class="date">Il gioco comincia quando la porta si apre.</div>
+<section class="screen" id="intro">
+<div class="wrap">
+<div class="kicker">31 ottobre · ore 22:00</div>
+<h1>Halloween<br>Secret</h1>
+<div class="subtitle">cinque stanze · cinque frammenti · una destinazione</div>
+<div class="card">
+<p>La casa non vi consegnerà nessuna risposta.</p>
+<p><b>Dovrete trovarle.</b></p>
+<p>Osservate. Ascoltate. Collegate gli indizi.</p>
+<button class="enter" id="enter">Entra nella casa</button>
+</div>
 </div>
 </section>
-
-<div id="game"></div>
 </div>
 
 <script>
-const fragments=[];
-let step=0;
-function startGame(){
-  setupVoice();
-  speak('Benvenuti. La porta è aperta. Da questo momento non vi dirò cosa cercare. Vi dirò soltanto dove guardare. Ascoltate bene.');
-  setTimeout(()=>showPuzzle(1),900);
+(function(){
+"use strict";
+var app=document.getElementById("app"), voice=null;
+function getVoice(){
+ if(!("speechSynthesis" in window))return;
+ var list=speechSynthesis.getVoices();
+ for(var i=0;i<list.length;i++){if(/^it/i.test(list[i].lang)){voice=list[i];break;}}
 }
-let narratorVoice=null;
-function setupVoice(){
-  if(!('speechSynthesis' in window)) return;
-  const voices=speechSynthesis.getVoices();
-  narratorVoice=voices.find(v=>/it(-|_)IT/i.test(v.lang)&&/female|femmin|alice|elsa|lucia|amelia|chiara/i.test(v.name))
-    ||voices.find(v=>/it(-|_)IT/i.test(v.lang))||voices[0]||null;
+if("speechSynthesis" in window){speechSynthesis.onvoiceschanged=getVoice;getVoice();}
+function say(t){
+ if(!("speechSynthesis" in window))return;
+ try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="it-IT";u.rate=.8;u.pitch=1;u.volume=.8;if(voice)u.voice=voice;speechSynthesis.speak(u);}catch(e){}
 }
-if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=setupVoice;setupVoice();}
-function speak(text){
-  if(!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text);
-  u.lang='it-IT'; u.rate=.82; u.pitch=1.02; u.volume=.82;
-  if(narratorVoice)u.voice=narratorVoice;
-  speechSynthesis.speak(u);
+function intro(){
+ var b=document.getElementById("enter");
+ if(b)b.onclick=function(){say("La porta è aperta. Da questo momento non vi dirò le risposte. Vi darò soltanto gli indizi.");setTimeout(p1,900);};
 }
-function base(num,title,sceneHTML,voice,bodyHTML){
-  document.getElementById('game').innerHTML=`
-  <section class="screen active">
-    <div class="vignette"></div><div class="content">
-      <div class="progress">${[1,2,3,4,5].map(n=>`<span class="dot ${n<=num?'done':''}"></span>`).join('')}</div>
-      <div class="scene">${sceneHTML}</div>
-      <div class="card">
-        <div class="small">Stanza ${num} di 5</div>
-        <h2 class="h">${title}</h2>
-        <button class="voiceBtn" onclick="speak(${JSON.stringify(voice)})"><span class="mic">◉</span> ASCOLTA</button>
-        <div class="voice">${voice}</div>
-        ${bodyHTML}
-      </div>
-    </div>
-  </section>`;
-  setTimeout(()=>speak(voice),220);
+function shell(n,title,narration,body){
+ app.innerHTML='<section class="screen"><div class="wrap"><div class="content"><div class="progress">'+
+ [1,2,3,4,5].map(function(i){return '<span class="dot '+(i<=n?'on':'')+'"></span>';}).join('')+
+ '</div><div class="room"><div class="sceneTitle">'+title+'</div><div class="candle"></div><div class="table"></div></div><div class="card">'+
+ '<h2>'+title+'</h2><button class="action" id="listen" style="min-height:auto">◉ ASCOLTA</button><div class="voice">'+narration+'</div>'+body+
+ '</div></div></div></section>';
+ document.getElementById("listen").onclick=function(){say(narration)};
+ setTimeout(function(){say(narration)},250);
 }
-function showPuzzle(n){
- step=n;
- if(n===1)p1();
- if(n===2)p2();
- if(n===3)p3();
- if(n===4)p4();
- if(n===5)p5();
-}
+var a=false,b=false;
 function p1(){
-base(1,'Lo studio',`
-<div class="room-title">LO STUDIO</div>
-<div class="frame"><div class="portrait-head"></div><div class="portrait-body"></div></div>
-<div class="clock"></div><div class="candle"></div><div class="desk"></div>`,
-'Nel cassetto trovi due cose. Una appartiene al calendario. L’altra appartiene al tempo. Non fidarti delle parole: osserva ciò che mostrano. Quando avrai capito entrambe, mettile insieme.',
-`<p class="p">Clicca gli oggetti dello studio. Ogni oggetto ti darà soltanto un indizio.</p>
-<div class="choices">
-<button class="choice" onclick="p1a()">OSSERVA IL CALENDARIO</button>
-<button class="choice" onclick="p1b()">OSSERVA L’OROLOGIO</button>
-</div>
-<div id="f1" class="feedback"></div>
-<div id="next1" class="hidden"></div>`);
+ shell(1,"Lo studio","Nel primo cassetto c’è il giorno. Sul quadrante c’è l’ora. Nessuno dei due, da solo, apre la porta.",
+ '<p>Esamina entrambi gli oggetti. Gli indizi non contengono la risposta: devi interpretarli.</p><div class="actions"><button class="action" id="cal">📜 CALENDARIO</button><button class="action" id="clock">◷ OROLOGIO</button></div><div id="f" class="feedback"></div><div id="r"></div>');
+ document.getElementById("cal").onclick=function(){a=true;document.getElementById("f").innerHTML="Sul bordo: <b>“Ottobre termina prima che inizi novembre.”</b>";unlock()};
+ document.getElementById("clock").onclick=function(){b=true;document.getElementById("f").innerHTML="Sul retro: <b>“Due lancette unite in alto. Conta i rintocchi della notte.”</b>";unlock()};
 }
-let c1=false,o1=false;
-function p1a(){c1=true;document.getElementById('f1').innerHTML='Il calendario mostra l’ultima casella del mese. <span class="small">Ricorda il numero.</span>';speak('L’ultima casella del mese. Ricorda il numero.');unlock1()}
-function p1b(){o1=true;document.getElementById('f1').innerHTML='Le lancette si incontrano esattamente sopra il quadrante. <span class="small">Ricorda l’ora.</span>';speak('Le lancette si incontrano esattamente sopra il quadrante. Ricorda l’ora.');unlock1()}
-function unlock1(){
-if(c1&&o1){
-document.getElementById('next1').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>31 OTTOBRE · 22:00</strong><button class="open-btn next" onclick="finish(1,'31 OTTOBRE · 22:00');showPuzzle(2)">PRENDI IL FRAMMENTO</button></div>`;
-document.getElementById('next1').classList.remove('hidden');
-speak('Avete trovato il primo frammento. Prendetelo. La casa non aspetterà.');
-}}
-let c1=false,o1=false;
-function p1a(){c1=true;document.getElementById('f1').innerHTML='Il mese muore nella sua ultima notte: <b>31 OTTOBRE</b>.';unlock1()}
-function p1b(){o1=true;document.getElementById('f1').innerHTML='Le lancette sono unite in alto: la casa usa l’ora <b>22:00</b>.';unlock1()}
-function unlock1(){if(c1&&o1)document.getElementById('next1').classList.remove('hidden')}
-function p2(){
-base(2,'Il ritratto',`
-<div class="room-title">IL RITRATTO</div>
-<div class="frame" style="left:50%;top:45px;transform:translateX(-50%);width:170px;height:190px">
-<div class="portrait-head" style="left:57px;top:28px;width:55px;height:70px"></div>
-<div class="portrait-body" style="left:37px;width:88px;height:90px"></div>
-<span style="position:absolute;top:20px;left:15px;color:#b49762">✦</span>
-<span style="position:absolute;top:40px;right:14px;color:#b49762">☾</span>
-<span style="position:absolute;bottom:55px;left:14px;color:#b49762">☾</span>
-<span style="position:absolute;bottom:28px;right:15px;color:#b49762">✦</span></div>`,
-'Il quadro nasconde una parola. Ma prima dovete capire la lingua del pittore. Cercate la piccola targhetta sotto la cornice. Poi osservate ciò che si ripete.',
-`<p class="p">Prima trova la targhetta. Poi usa la legenda per decifrare soltanto i quattro simboli ripetuti.</p>
-<div class="choices">
-<button class="choice" onclick="legend2()">CERCA LA TARGHETTA</button>
-</div>
-<div id="legend" class="feedback"></div>
-<div id="symbols2" class="hidden">
-<div class="choices">
-<button class="choice" onclick="pick2('L',0)">☾</button>
-<button class="choice" onclick="pick2('I',1)">✦</button>
-<button class="choice" onclick="pick2('N',2)">◇</button>
-<button class="choice" onclick="pick2('O',3)">♢</button>
-</div>
-<div class="letters"><span class="letter" id="l20">?</span><span class="letter" id="l21">?</span><span class="letter" id="l22">?</span><span class="letter" id="l23">?</span></div>
-</div>
-<div id="f2" class="feedback"></div>
-<div id="next2" class="hidden"></div>`);
-}
-function legend2(){
-document.getElementById('legend').innerHTML='Sul retro della targhetta: <b>“L’inizio della parola è il simbolo della luna. Poi segui la forma più semplice, poi la pietra, poi il suo riflesso.”</b>';
-document.getElementById('symbols2').classList.remove('hidden');
-speak('Sul retro della targhetta c’è una legenda. La luna apre la parola. Poi viene la forma più semplice. Poi la pietra. Infine il suo riflesso.');
-}
-let seq2=0;
-function pick2(letter,index){if(index!==seq2){document.getElementById('f2').textContent='Non ancora. Seguite l’ordine della cornice.';return}document.getElementById('l2'+index).textContent=letter;seq2++;if(seq2===4){document.getElementById('f2').innerHTML='Il ritratto si apre e lascia cadere un piccolo cartiglio.';document.getElementById('next2').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>LINO</strong><button class="open-btn next" onclick="finish(2,'LINO');showPuzzle(3)">PRENDI IL FRAMMENTO</button></div>`;document.getElementById('next2').classList.remove('hidden');speak('Il ritratto si apre. Avete trovato il secondo frammento.');}}
-function p3(){
-base(3,'La stanza delle chiavi',`
-<div class="room-title">LA STANZA DELLE CHIAVI</div>
-<div class="desk"></div><div class="candle"></div>
-<div style="position:absolute;left:8%;top:65px;width:80px;height:105px;border:4px solid #5c4734;background:#181012;z-index:2"></div>
-<div style="position:absolute;right:8%;top:58px;width:110px;height:145px;border:2px solid #624a35;background:#0d0a0b;z-index:2"></div>`,
-'Questa stanza non era vuota quando siamo arrivati. Sei chiavi. Sei serrature. Ma soltanto una è stata lasciata per voi.',
-`<p class="p">Tre indizi sono rimasti nella stanza: <b>non è la II</b>; <b>non ha una luna</b>; cerca <b>il corvo</b>.</p>
-<div class="choices">${['I · ☾','II · 🜂','III · ◇','IV · 🜁','V · ☾','VI · ☀'].map((x,i)=>`<button class="choice" onclick="key3(${i+1})">${x}</button>`).join('')}</div>
-<div id="f3" class="feedback"></div>
-<div id="next3" class="hidden"><button class="open-btn next" onclick="finish(3,'CADO');showPuzzle(4)">CONSERVA IL FRAMMENTO</button></div>`);
-}
-function key3(n){if(n===4){document.getElementById('f3').innerHTML='La serratura scatta. Dentro c’è un biglietto piegato. La scritta sarà leggibile soltanto quando lo aprirai.';
-document.getElementById('next3').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>CADO</strong><button class="open-btn next" onclick="finish(3,'CADO');showPuzzle(4)">PRENDI IL FRAMMENTO</button></div>`;
-document.getElementById('next3').classList.remove('hidden');speak('La serratura scatta. Il biglietto era qui da tempo. Avete trovato il terzo frammento.');}else document.getElementById('f3').textContent='Questa chiave non corrisponde a tutti gli indizi.'}
-function p4(){
-base(4,'La lettera',`
-<div class="room-title">LA LETTERA</div><div class="desk"></div><div class="candle"></div>
-<div style="position:absolute;left:50%;top:52px;transform:translateX(-50%) rotate(-2deg);width:230px;height:150px;background:#d9c8aa;z-index:2;box-shadow:0 15px 35px #000;color:#34231e;padding:22px;font-size:12px;line-height:1.8">Vedo la strada dalla finestra.<br>Il cancello è ancora aperto.<br>A volte, di notte, qualcuno passa.</div>`,
-'Una lettera. Tre righe. Non serve leggere tra le parole. Serve guardare dove cominciano.',
-`<p class="p">Toccate le righe dall’alto verso il basso. Le iniziali vi diranno ciò che manca.</p>
-<div class="choices">
-<button class="choice" onclick="line4(0)">Vedo la strada...</button>
-<button class="choice" onclick="line4(1)">Il cancello...</button>
-<button class="choice" onclick="line4(2)">A volte...</button>
-</div>
-<div class="letters"><span class="letter" id="l40">?</span><span class="letter" id="l41">?</span><span class="letter" id="l42">?</span></div>
-<div id="f4" class="feedback"></div>
-<div id="next4" class="hidden"><button class="open-btn next" onclick="finish(4,'VIA');showPuzzle(5)">CONSERVA IL FRAMMENTO</button></div>`);
-}
-let seq4=0;
-function line4(i){if(i!==seq4){document.getElementById('f4').textContent='La lettera va letta dall’alto verso il basso.';return}const a=['V','I','A'];document.getElementById('l4'+i).textContent=a[i];seq4++;if(seq4===3){document.getElementById('f4').innerHTML='Le tre iniziali si illuminano. Il significato appare soltanto adesso.';
-document.getElementById('next4').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>VIA</strong><button class="open-btn next" onclick="finish(4,'VIA');showPuzzle(5)">PRENDI IL FRAMMENTO</button></div>`;
-document.getElementById('next4').classList.remove('hidden');speak('Le tre iniziali si illuminano. Avete trovato il quarto frammento.');}}
-function p5(){
-base(5,'La casa delle sei porte',`
-<div class="room-title">LA CASA DELLE SEI PORTE</div>
-${[1,2,3,4,5,6].map((n,i)=>`<div style="position:absolute;bottom:22px;left:${7+i*15.5}%;width:12%;height:150px;border:2px solid #604934;background:linear-gradient(90deg,#171011,#2a1819,#120c0d);z-index:2"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#b49762;font-size:14px">${n}</span></div>`).join('')}`,
-'Avete trovato quasi tutto. Questa volta non cercate una parola. Cercate la porta giusta.',
-`<p class="p">Cinque portano da qualche parte. <b>Una porta non ha bisogno di essere aperta.</b> Esaminatele. Solo una non ha nulla da mostrare.</p>
-<div class="choices">${[1,2,3,4,5,6].map(n=>`<button class="choice" onclick="door5(${n})">PORTA ${n}</button>`).join('')}</div>
-<div id="f5" class="feedback"></div>
-<div id="next5" class="hidden"><button class="open-btn next" onclick="finish(5,'6');finalScreen()">APRITE L’ULTIMO FRAMMENTO</button></div>`);
-}
-function door5(n){if(n===6){document.getElementById('f5').innerHTML='Dietro questa porta non c’è una stanza. C’è un ultimo frammento.';
-document.getElementById('next5').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>6</strong><button class="open-btn next" onclick="finish(5,'6');finalScreen()">RICOMPORRE IL MESSAGGIO</button></div>`;
-document.getElementById('next5').classList.remove('hidden');speak('La sesta porta era quella che non chiedeva di essere aperta. Ora avete tutti i frammenti.');}else document.getElementById('f5').textContent='Dietro questa porta c’è qualcosa. Non è quella che state cercando.'}
-function finish(n,val){fragments[n-1]=val}
-function finalScreen(){
-document.getElementById('game').innerHTML=`
-<section class="screen active"><div class="vignette"></div><div class="content">
-<div class="kicker">La casa vi ha lasciato uscire</div>
-<div class="scene" style="min-height:210px"><div class="room-title">ULTIMO MESSAGGIO</div><div class="candle"></div><div class="desk"></div></div>
-<div class="card">
-<button class="voiceBtn" onclick="speak('Avete trovato tutto. Mettete insieme i frammenti. Via Cadolino sei. Trentuno ottobre, ore ventidue. La porta vi aspetta.')"><span class="mic">◉</span> ASCOLTA IL MESSAGGIO</button>
-<h2 class="h" style="text-align:center">Avete trovato tutto.</h2>
-<p class="p" style="text-align:center">Mettete insieme i frammenti. Non cambiate il loro ordine.</p>
-<div class="final-address">VIA CADOLINO 6</div>
-<div class="final-date">31 OTTOBRE · 22:00</div>
-<a class="open-btn maps" href="https://www.google.com/maps/search/?api=1&query=Via+Cadolino+6" target="_blank" rel="noopener">APRI LA MAPPA</a>
-<div class="date">Non arrivate prima. Non bussate due volte.</div>
-</div></div></section>`;
-}
+function unlock(){if(a&&b)document.getElementById("r").innerHTML='<div class="found"><small>Primo frammento</small><strong>31 OTTOBRE · 22:00</strong><button class="next" id="n">CONTINUA</button></div>';var x=document.getElementById("n");if(x)x.onclick=p2}
+function p2(){shell(2,"Il ritratto","Il pittore ha nascosto quattro lettere dentro quattro simboli. Prima trovate la regola. Poi decifrate.",'<p>Cerca la targhetta nascosta sotto la cornice.</p><button class="action" id="pl">CERCA LA TARGHETTA</button><div id="c"></div>');document.getElementById("pl").onclick=function(){document.getElementById("c").innerHTML='<div class="feedback">La legenda dice: <b>☾=L · ✦=I · ◇=N · ♢=O</b><br>Ordine: alto, destra, basso, sinistra.</div><div class="actions">'+["☾","✦","◇","♢"].map(function(x,i){return '<button class="action sym" data-i="'+i+'">'+x+'</button>'}).join("")+'</div><div id="f2" class="feedback"></div>';var s=0;document.querySelectorAll(".sym").forEach(function(q){q.onclick=function(){var i=+q.dataset.i;if(i!==s){document.getElementById("f2").textContent="Il quadro resta immobile. L’ordine non è corretto.";return}s++;q.style.borderColor="#b99a61";if(s===4)document.getElementById("f2").innerHTML='<div class="found"><small>Secondo frammento</small><strong>LINO</strong><button class="next" id="n2">CONTINUA</button></div>';var z=document.getElementById("n2");if(z)z.onclick=p3}})}}
+function p3(){shell(3,"La stanza delle chiavi","Sei chiavi. Tre indizi. La soluzione nasce eliminando ciò che non può essere vero.",'<p>Trova i tre indizi negli oggetti.</p><div class="actions"><button class="action clue">🪞 SPECCHIO</button><button class="action clue">📖 LIBRO</button><button class="action clue">🖼 QUADRO</button></div><div id="f3" class="feedback"></div><div id="k"></div>');var clues=0;document.querySelectorAll(".clue").forEach(function(q,i){q.onclick=function(){if(q.disabled)return;q.disabled=true;clues++;q.style.borderColor="#b99a61";var t=["Non scegliere il numero II.","La luna è stata cancellata.","Cerca il corvo."][i];document.getElementById("f3").innerHTML=t;if(clues===3){document.getElementById("k").innerHTML='<div class="actions">'+["I · ☾","II · 🜂","III · ☀","IV · 🜂","V · ☾","VI · 🐦‍⬛"].map(function(x,j){return '<button class="action key" data-k="'+(j+1)+'">'+x+'</button>'}).join("")+'</div>';document.querySelectorAll(".key").forEach(function(k){k.onclick=function(){if(+k.dataset.k===6)document.getElementById("k").innerHTML='<div class="found"><small>Terzo frammento</small><strong>CADO</strong><button class="next" id="n3">CONTINUA</button></div>';else document.getElementById("f3").textContent="Questa chiave viola almeno uno degli indizi.";var z=document.getElementById("n3");if(z)z.onclick=p4}})}}})}
+function p4(){shell(4,"La lettera","Tre righe. Non leggerle come un testo. Seguite il percorso che descrivono.",'<div class="paper">Vedo la strada dalla finestra.<br>Il cancello è ancora aperto.<br>A volte, di notte, qualcuno passa.</div><p>Ordina: ciò che si vede → ciò che separa → ciò che accade al buio.</p><div class="actions">'+["STRADA","CANCELLO","NOTTE"].map(function(x,i){return '<button class="action line" data-i="'+i+'">'+x+'</button>'}).join("")+'</div><div id="f4" class="feedback"></div>');var s=0;document.querySelectorAll(".line").forEach(function(q){q.onclick=function(){var i=+q.dataset.i;if(i!==s){document.getElementById("f4").textContent="Questa non è la prossima tappa.";return}s++;q.style.borderColor="#b99a61";if(s===3)document.getElementById("f4").innerHTML='<div class="found"><small>Quarto frammento</small><strong>VIA</strong><button class="next" id="n4">CONTINUA</button></div>';var z=document.getElementById("n4");if(z)z.onclick=p5}})}
+function p5(){shell(5,"La casa delle sei porte","Cinque porte conducono a qualcosa. Una non conduce a nulla. È quella che cercate.",'<p>Esamina le porte. Non serve aprirle: ascolta cosa c’è dietro.</p><div class="actions">'+[1,2,3,4,5,6].map(function(n){return '<button class="action door" data-d="'+n+'">PORTA '+n+'</button>'}).join("")+'</div><div id="f5" class="feedback"></div>');document.querySelectorAll(".door").forEach(function(q){q.onclick=function(){var n=+q.dataset.d;var t=["vento","un corridoio","una stanza","una scala","una finestra","nulla"][n-1];document.getElementById("f5").textContent=n===6?"Non senti nulla. Questa porta non ha bisogno di essere aperta.":"Dietro la porta senti "+t+".";if(n===6)document.getElementById("f5").innerHTML+='<div class="found"><small>Ultimo frammento</small><strong>6</strong><button class="next" id="final">RICOMPONI</button></div>';var z=document.getElementById("final");if(z)z.onclick=finale}})}
+function finale(){app.innerHTML='<section class="screen"><div class="wrap"><div class="kicker">Il messaggio è completo</div><div class="card"><h2>Destinazione</h2><div class="found"><strong class="final">VIA CADOLINO 6</strong><strong>31 OTTOBRE · 22:00</strong></div><button class="enter" id="map">APRI LA MAPPA</button></div></div></section>';document.getElementById("map").onclick=function(){location.href="https://www.google.com/maps/search/?api=1&query=Via+Cadolino+6"};say("Avete trovato la destinazione. Via Cadolino sei. Trentuno ottobre, ore ventidue.");}
+intro();
+})();
 </script>
 </body>
 </html>
