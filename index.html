@@ -1,108 +1,100 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>HALLOWEEN SECRET</title>
-<style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;min-height:100%;background:#070608;color:#eee4d5}
-body{font-family:Georgia,'Times New Roman',serif}
-#app{min-height:100vh}
-.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:
-radial-gradient(circle at 50% 28%,rgba(105,20,35,.48),transparent 28%),
-radial-gradient(circle at 50% 70%,rgba(45,8,16,.65),transparent 48%),
-linear-gradient(145deg,#050506,#17090d 52%,#050506);position:relative;overflow:hidden}
-.screen:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 130px #000}
-.wrap{position:relative;z-index:2;width:min(700px,100%);text-align:center}
-.kicker{color:#b99a61;text-transform:uppercase;letter-spacing:.35em;font-size:10px;margin-bottom:18px}
-h1{font-size:clamp(46px,13vw,88px);line-height:.86;letter-spacing:.08em;margin:0;text-transform:uppercase;text-shadow:0 0 28px rgba(142,38,53,.65)}
-.subtitle{color:#9c8d7e;letter-spacing:.28em;font-size:11px;margin:25px 0 42px}
-.card{background:rgba(13,8,10,.93);border:1px solid #542530;padding:26px;box-shadow:0 25px 80px #000}
-p{color:#ad9f90;line-height:1.7;font-size:15px}
-b{color:#eadfce}
-button{font:inherit}
-.enter{display:block;width:100%;padding:16px;margin-top:24px;border:1px solid #b99a61;background:linear-gradient(#45121d,#21090f);color:#eee4d5;letter-spacing:.18em;text-transform:uppercase;font-size:11px}
-.enter:active{transform:scale(.99)}
-.hidden{display:none!important}
-.room{height:260px;margin-bottom:20px;position:relative;overflow:hidden;border:1px solid #53362e;background:linear-gradient(#190f14,#080708);box-shadow:inset 0 0 80px #000}
-.room:before{content:"";position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(221,204,171,.14);left:50%;top:38px;transform:translateX(-50%);box-shadow:0 0 70px rgba(221,204,171,.12)}
-.candle{position:absolute;width:12px;height:48px;bottom:42px;left:50%;background:#c9b998}.candle:before{content:"";position:absolute;width:9px;height:17px;top:-16px;left:2px;background:#d28b2d;border-radius:50%;box-shadow:0 0 25px 8px rgba(210,139,45,.3)}
-.table{position:absolute;bottom:30px;left:12%;right:12%;height:17px;background:#2a1718;border:1px solid #694932}
-.sceneTitle{position:absolute;top:14px;left:15px;color:#b99a61;letter-spacing:.3em;font-size:10px}
-.content{text-align:left}
-.progress{text-align:center;margin-bottom:15px}.dot{display:inline-block;width:8px;height:8px;border:1px solid #68323d;border-radius:50%;margin:0 3px}.dot.on{background:#8f2635}
-h2{font-size:25px;letter-spacing:.08em;text-transform:uppercase;margin:4px 0 10px}
-.voice{border-left:2px solid #7b1e2d;padding:8px 0 8px 14px;color:#c9bbab;font-style:italic;line-height:1.6}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:18px}
-.action{min-height:65px;background:#0c0809;border:1px solid #54313a;color:#ddcfbc;padding:10px}
-.feedback{color:#c9a96c;min-height:35px;margin-top:15px;line-height:1.5}
-.found{border:1px solid #7b5b38;background:#1c0c10;text-align:center;padding:16px;margin-top:16px}
-.found small{display:block;color:#a78c63;letter-spacing:.25em;font-size:9px;text-transform:uppercase}.found strong{display:block;font-size:26px;letter-spacing:.13em;margin:7px}
-.next{width:100%;padding:13px;border:1px solid #a98955;background:#3c1019;color:#eee1cf;letter-spacing:.15em}
-.final{font-size:clamp(28px,8vw,52px);letter-spacing:.12em;color:#eee2d0}
-@media(max-width:520px){.actions{grid-template-columns:1fr}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070609">
+  <title>Il Sigillo — La Notte delle Anime Perdute</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="app">
-<section class="screen" id="intro">
-<div class="wrap">
-<div class="kicker">31 ottobre · ore 22:00</div>
-<h1>Halloween<br>Secret</h1>
-<div class="subtitle">cinque stanze · cinque frammenti · una destinazione</div>
-<div class="card">
-<p>La casa non vi consegnerà nessuna risposta.</p>
-<p><b>Dovrete trovarle.</b></p>
-<p>Osservate. Ascoltate. Collegate gli indizi.</p>
-<button class="enter" id="enter">Entra nella casa</button>
-</div>
-</div>
-</section>
-</div>
+  <div class="fog fog-a"></div><div class="fog fog-b"></div>
+  <div class="grain"></div>
+  <main id="app">
+    <section class="screen active" id="intro">
+      <div class="eyebrow">HALLOWEEN • ACCESSO RISERVATO</div>
+      <h1>Il Sigillo</h1>
+      <p class="subtitle">La Notte delle Anime Perdute</p>
+      <div class="seal"><span>†</span></div>
+      <audio id="audioIntro" controls preload="metadata" class="audio"><source src="audio/audio-01.mp3" type="audio/mpeg"></audio><p class="story">L'invito è stato strappato. Il luogo della congrega è stato cancellato. Quattro prove custodiscono la strada.</p>
+      <button class="primary" data-go="scene1">ENTRA NELLA NOTTE</button>
+      <p class="tiny">Gioco individuale · circa 5–10 minuti</p>
+    </section>
 
-<script>
-(function(){
-"use strict";
-var app=document.getElementById("app"), voice=null;
-function getVoice(){
- if(!("speechSynthesis" in window))return;
- var list=speechSynthesis.getVoices();
- for(var i=0;i<list.length;i++){if(/^it/i.test(list[i].lang)){voice=list[i];break;}}
-}
-if("speechSynthesis" in window){speechSynthesis.onvoiceschanged=getVoice;getVoice();}
-function say(t){
- if(!("speechSynthesis" in window))return;
- try{speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang="it-IT";u.rate=.8;u.pitch=1;u.volume=.8;if(voice)u.voice=voice;speechSynthesis.speak(u);}catch(e){}
-}
-function intro(){
- var b=document.getElementById("enter");
- if(b)b.onclick=function(){say("La porta è aperta. Da questo momento non vi dirò le risposte. Vi darò soltanto gli indizi.");setTimeout(p1,900);};
-}
-function shell(n,title,narration,body){
- app.innerHTML='<section class="screen"><div class="wrap"><div class="content"><div class="progress">'+
- [1,2,3,4,5].map(function(i){return '<span class="dot '+(i<=n?'on':'')+'"></span>';}).join('')+
- '</div><div class="room"><div class="sceneTitle">'+title+'</div><div class="candle"></div><div class="table"></div></div><div class="card">'+
- '<h2>'+title+'</h2><button class="action" id="listen" style="min-height:auto">◉ ASCOLTA</button><div class="voice">'+narration+'</div>'+body+
- '</div></div></div></section>';
- document.getElementById("listen").onclick=function(){say(narration)};
- setTimeout(function(){say(narration)},250);
-}
-var a=false,b=false;
-function p1(){
- shell(1,"Lo studio","Nel primo cassetto c’è il giorno. Sul quadrante c’è l’ora. Nessuno dei due, da solo, apre la porta.",
- '<p>Esamina entrambi gli oggetti. Gli indizi non contengono la risposta: devi interpretarli.</p><div class="actions"><button class="action" id="cal">📜 CALENDARIO</button><button class="action" id="clock">◷ OROLOGIO</button></div><div id="f" class="feedback"></div><div id="r"></div>');
- document.getElementById("cal").onclick=function(){a=true;document.getElementById("f").innerHTML="Sul bordo: <b>“Ottobre termina prima che inizi novembre.”</b>";unlock()};
- document.getElementById("clock").onclick=function(){b=true;document.getElementById("f").innerHTML="Sul retro: <b>“Due lancette unite in alto. Conta i rintocchi della notte.”</b>";unlock()};
-}
-function unlock(){if(a&&b)document.getElementById("r").innerHTML='<div class="found"><small>Primo frammento</small><strong>31 OTTOBRE · 22:00</strong><button class="next" id="n">CONTINUA</button></div>';var x=document.getElementById("n");if(x)x.onclick=p2}
-function p2(){shell(2,"Il ritratto","Il pittore ha nascosto quattro lettere dentro quattro simboli. Prima trovate la regola. Poi decifrate.",'<p>Cerca la targhetta nascosta sotto la cornice.</p><button class="action" id="pl">CERCA LA TARGHETTA</button><div id="c"></div>');document.getElementById("pl").onclick=function(){document.getElementById("c").innerHTML='<div class="feedback">La legenda dice: <b>☾=L · ✦=I · ◇=N · ♢=O</b><br>Ordine: alto, destra, basso, sinistra.</div><div class="actions">'+["☾","✦","◇","♢"].map(function(x,i){return '<button class="action sym" data-i="'+i+'">'+x+'</button>'}).join("")+'</div><div id="f2" class="feedback"></div>';var s=0;document.querySelectorAll(".sym").forEach(function(q){q.onclick=function(){var i=+q.dataset.i;if(i!==s){document.getElementById("f2").textContent="Il quadro resta immobile. L’ordine non è corretto.";return}s++;q.style.borderColor="#b99a61";if(s===4)document.getElementById("f2").innerHTML='<div class="found"><small>Secondo frammento</small><strong>LINO</strong><button class="next" id="n2">CONTINUA</button></div>';var z=document.getElementById("n2");if(z)z.onclick=p3}})}}
-function p3(){shell(3,"La stanza delle chiavi","Sei chiavi. Tre indizi. La soluzione nasce eliminando ciò che non può essere vero.",'<p>Trova i tre indizi negli oggetti.</p><div class="actions"><button class="action clue">🪞 SPECCHIO</button><button class="action clue">📖 LIBRO</button><button class="action clue">🖼 QUADRO</button></div><div id="f3" class="feedback"></div><div id="k"></div>');var clues=0;document.querySelectorAll(".clue").forEach(function(q,i){q.onclick=function(){if(q.disabled)return;q.disabled=true;clues++;q.style.borderColor="#b99a61";var t=["Non scegliere il numero II.","La luna è stata cancellata.","Cerca il corvo."][i];document.getElementById("f3").innerHTML=t;if(clues===3){document.getElementById("k").innerHTML='<div class="actions">'+["I · ☾","II · 🜂","III · ☀","IV · 🜂","V · ☾","VI · 🐦‍⬛"].map(function(x,j){return '<button class="action key" data-k="'+(j+1)+'">'+x+'</button>'}).join("")+'</div>';document.querySelectorAll(".key").forEach(function(k){k.onclick=function(){if(+k.dataset.k===6)document.getElementById("k").innerHTML='<div class="found"><small>Terzo frammento</small><strong>CADO</strong><button class="next" id="n3">CONTINUA</button></div>';else document.getElementById("f3").textContent="Questa chiave viola almeno uno degli indizi.";var z=document.getElementById("n3");if(z)z.onclick=p4}})}}})}
-function p4(){shell(4,"La lettera","Tre righe. Non leggerle come un testo. Seguite il percorso che descrivono.",'<div class="paper">Vedo la strada dalla finestra.<br>Il cancello è ancora aperto.<br>A volte, di notte, qualcuno passa.</div><p>Ordina: ciò che si vede → ciò che separa → ciò che accade al buio.</p><div class="actions">'+["STRADA","CANCELLO","NOTTE"].map(function(x,i){return '<button class="action line" data-i="'+i+'">'+x+'</button>'}).join("")+'</div><div id="f4" class="feedback"></div>');var s=0;document.querySelectorAll(".line").forEach(function(q){q.onclick=function(){var i=+q.dataset.i;if(i!==s){document.getElementById("f4").textContent="Questa non è la prossima tappa.";return}s++;q.style.borderColor="#b99a61";if(s===3)document.getElementById("f4").innerHTML='<div class="found"><small>Quarto frammento</small><strong>VIA</strong><button class="next" id="n4">CONTINUA</button></div>';var z=document.getElementById("n4");if(z)z.onclick=p5}})}
-function p5(){shell(5,"La casa delle sei porte","Cinque porte conducono a qualcosa. Una non conduce a nulla. È quella che cercate.",'<p>Esamina le porte. Non serve aprirle: ascolta cosa c’è dietro.</p><div class="actions">'+[1,2,3,4,5,6].map(function(n){return '<button class="action door" data-d="'+n+'">PORTA '+n+'</button>'}).join("")+'</div><div id="f5" class="feedback"></div>');document.querySelectorAll(".door").forEach(function(q){q.onclick=function(){var n=+q.dataset.d;var t=["vento","un corridoio","una stanza","una scala","una finestra","nulla"][n-1];document.getElementById("f5").textContent=n===6?"Non senti nulla. Questa porta non ha bisogno di essere aperta.":"Dietro la porta senti "+t+".";if(n===6)document.getElementById("f5").innerHTML+='<div class="found"><small>Ultimo frammento</small><strong>6</strong><button class="next" id="final">RICOMPONI</button></div>';var z=document.getElementById("final");if(z)z.onclick=finale}})}
-function finale(){app.innerHTML='<section class="screen"><div class="wrap"><div class="kicker">Il messaggio è completo</div><div class="card"><h2>Destinazione</h2><div class="found"><strong class="final">VIA CADOLINO 6</strong><strong>31 OTTOBRE · 22:00</strong></div><button class="enter" id="map">APRI LA MAPPA</button></div></div></section>';document.getElementById("map").onclick=function(){location.href="https://www.google.com/maps/search/?api=1&query=Via+Cadolino+6"};say("Avete trovato la destinazione. Via Cadolino sei. Trentuno ottobre, ore ventidue.");}
-intro();
-})();
-</script>
+    <section class="screen" id="scene1">
+      <div class="progress"><span class="dot on"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="eyebrow">PRIMA PROVA</div>
+      <h2>Il messaggio del morto</h2>
+      <audio controls preload="metadata" class="audio"><source src="audio/audio-02.mp3" type="audio/mpeg"></audio><p class="narrative">Una voce ti chiama dal buio. Sul muro compaiono sei righe. Qualcosa si nasconde all'inizio.</p>
+      <div class="parchment" id="acrostic">
+        <p><b>M</b>olti sono entrati. Ora nessuno vuole uscire.</p>
+        <p><b>O</b>gni porta conduce sempre più in profondità.</p>
+        <p><b>R</b>icorda: ciò che vedi non è tutto ciò che esiste.</p>
+        <p><b>S</b>otto la luna, persino le ombre hanno un nome.</p>
+        <p><b>E</b>vita di fidarti della prima risposta.</p>
+        <p><b>T</b>rova ciò che è scritto prima di continuare.</p>
+      </div>
+      <div class="hint-box"><span>INDIZIO</span><button class="textbtn" id="hint1">Mostra</button><p id="hintText1" class="hidden">Guarda le prime lettere delle sei righe.</p></div>
+      <div class="answer"><input id="answer1" autocomplete="off" placeholder="Inserisci la parola"><button class="primary small" id="check1">Sblocca</button></div>
+      <p class="error" id="error1"></p>
+    </section>
+
+    <section class="screen" id="scene2">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="eyebrow">SECONDA PROVA</div>
+      <h2>Il conto dei morti</h2>
+      <audio controls preload="metadata" class="audio"><source src="audio/audio-03.mp3" type="audio/mpeg"></audio><p class="narrative">Le quattro reliquie hanno un valore. Risolvi le equazioni e inserisci il risultato finale.</p>
+      <div class="equations">
+        <div>☠️ + ☠️ + 🕷️ = <b>13</b></div>
+        <div>🕷️ + 🦇 = <b>9</b></div>
+        <div>🦇 × 🩸 = <b>12</b></div>
+        <div>☠️ + 🩸 = <b>?</b></div>
+      </div>
+      <div class="hint-box"><span>INDIZIO</span><button class="textbtn" id="hint2">Mostra</button><p id="hintText2" class="hidden">Trova prima il valore del teschio, poi del ragno, del pipistrello e infine della goccia.</p></div>
+      <div class="answer"><input id="answer2" inputmode="numeric" autocomplete="off" placeholder="Numero"><button class="primary small" id="check2">Sblocca</button></div>
+      <p class="error" id="error2"></p>
+    </section>
+
+    <section class="screen" id="scene3">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot"></span></div>
+      <div class="eyebrow">TERZA PROVA</div>
+      <h2>Non fidarti dei tuoi occhi</h2>
+      <audio controls preload="metadata" class="audio"><source src="audio/audio-04.mp3" type="audio/mpeg"></audio><p class="narrative">Nove simboli. Uno solo nasconde la traccia. Tocca quello che non appartiene al disegno.</p>
+      <div class="grid" id="symbolGrid"></div>
+      <div class="hint-box"><span>INDIZIO</span><button class="textbtn" id="hint3">Mostra</button><p id="hintText3" class="hidden">Conta le ripetizioni: quasi tutti i simboli compaiono due volte. Uno è solo.</p></div>
+      <p class="selected" id="selectedSymbol">Nessuna scelta.</p>
+      <button class="primary" id="check3" disabled>Conferma il simbolo</button>
+      <p class="error" id="error3"></p>
+    </section>
+
+    <section class="screen" id="scene4">
+      <div class="progress"><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span><span class="dot on"></span></div>
+      <div class="eyebrow">IL SIGILLO</div>
+      <h2>La porta ricorda</h2>
+      <audio controls preload="metadata" class="audio"><source src="audio/audio-05.mp3" type="audio/mpeg"></audio><p class="narrative">Hai raccolto tre frammenti. Ricomponili nel loro ordine.</p>
+      <div class="fragments"><span>M</span><span>7</span><span>☠</span></div>
+      <p class="code-note">La serratura vuole i tre segni nell'ordine delle prove.</p>
+      <div class="answer"><input id="answer4" maxlength="3" autocomplete="off" placeholder="___"><button class="primary small" id="check4">Apri</button></div>
+      <p class="error" id="error4"></p>
+    </section>
+
+    <section class="screen finale" id="finale">
+      <div class="eyebrow">SIGILLO SPEZZATO</div>
+      <div class="burst">✦</div>
+      <h2>Hai trovato il luogo.</h2>
+      <p class="final-copy">La porta si aprirà. La notte ti aspetta.</p>
+      <audio controls preload="metadata" class="audio"><source src="audio/audio-06.mp3" type="audio/mpeg"></audio><div class="location-card">
+        <span>📍 IL LUOGO DELLA CONGREGA</span>
+        <strong id="address">—</strong>
+        <small id="time">22:00</small>
+      </div>
+      <div class="namebox">
+        <label for="nickname">Firma la tua sopravvivenza (facoltativo)</label>
+        <div class="answer"><input id="nickname" maxlength="20" placeholder="Nickname"><button class="primary small" id="saveName">Salva</button></div>
+      </div>
+      <p class="tiny" id="saved">Non condividere il luogo prima che tutti abbiano giocato. 🩸</p>
+    </section>
+  </main>
+  <script src="script.js"></script>
 </body>
 </html>
