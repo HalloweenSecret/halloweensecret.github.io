@@ -94,6 +94,12 @@ button{font:inherit}
 .final-date{text-align:center;color:var(--gold2);letter-spacing:.25em;font-size:13px;margin-bottom:28px}
 .maps{display:block;text-decoration:none;text-align:center}
 @media(max-width:500px){.choices{grid-template-columns:1fr}.scene{min-height:235px}.card{padding:20px}}
+
+.voiceBtn{display:inline-flex;align-items:center;gap:8px;margin:0 auto 18px;padding:10px 14px;background:#160b0e;border:1px solid rgba(180,151,98,.35);color:#cdbb9c;letter-spacing:.12em;text-transform:uppercase;font-size:10px;cursor:pointer}
+.voiceBtn .mic{font-size:14px}
+.discovery{margin-top:20px;padding:16px;border:1px solid rgba(180,151,98,.38);background:linear-gradient(145deg,#2a0b12,#10090b);text-align:center}
+.discovery .found{font-size:10px;letter-spacing:.25em;color:#9c8664;text-transform:uppercase}
+.discovery strong{display:block;margin-top:7px;color:#efe2cf;font-size:25px;letter-spacing:.15em}
 </style>
 </head>
 <body>
@@ -120,7 +126,27 @@ Cinque stanze. Cinque frammenti. Una destinazione.<br>
 <script>
 const fragments=[];
 let step=0;
-function startGame(){showPuzzle(1)}
+function startGame(){
+  setupVoice();
+  speak('Benvenuti. La porta è aperta. Da questo momento non vi dirò cosa cercare. Vi dirò soltanto dove guardare. Ascoltate bene.');
+  setTimeout(()=>showPuzzle(1),900);
+}
+let narratorVoice=null;
+function setupVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const voices=speechSynthesis.getVoices();
+  narratorVoice=voices.find(v=>/it(-|_)IT/i.test(v.lang)&&/female|femmin|alice|elsa|lucia|amelia|chiara/i.test(v.name))
+    ||voices.find(v=>/it(-|_)IT/i.test(v.lang))||voices[0]||null;
+}
+if('speechSynthesis' in window){speechSynthesis.onvoiceschanged=setupVoice;setupVoice();}
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='it-IT'; u.rate=.82; u.pitch=1.02; u.volume=.82;
+  if(narratorVoice)u.voice=narratorVoice;
+  speechSynthesis.speak(u);
+}
 function base(num,title,sceneHTML,voice,bodyHTML){
   document.getElementById('game').innerHTML=`
   <section class="screen active">
@@ -130,11 +156,13 @@ function base(num,title,sceneHTML,voice,bodyHTML){
       <div class="card">
         <div class="small">Stanza ${num} di 5</div>
         <h2 class="h">${title}</h2>
-        <div class="voice">“${voice}”</div>
+        <button class="voiceBtn" onclick="speak(${JSON.stringify(voice)})"><span class="mic">◉</span> ASCOLTA</button>
+        <div class="voice">${voice}</div>
         ${bodyHTML}
       </div>
     </div>
   </section>`;
+  setTimeout(()=>speak(voice),220);
 }
 function showPuzzle(n){
  step=n;
@@ -146,39 +174,66 @@ function showPuzzle(n){
 }
 function p1(){
 base(1,'Lo studio',`
-<div class="room-title">LO STUDIO</div><div class="frame"><div class="portrait-head"></div><div class="portrait-body"></div></div>
+<div class="room-title">LO STUDIO</div>
+<div class="frame"><div class="portrait-head"></div><div class="portrait-body"></div></div>
 <div class="clock"></div><div class="candle"></div><div class="desk"></div>`,
-'Non cercare la data scritta. Cerca la notte che non appartiene a nessun’altra. Il mese muore. L’orologio, invece, non usa il tempo dei vivi. Quando le lancette si incontrano in alto, la casa apre le sue porte.',
-`<p class="p">Due oggetti hanno una risposta. Il calendario indica <b>l’ultima notte di ottobre</b>. L’orologio indica l’ora in cui le lancette sono entrambe in alto.</p>
+'Nel cassetto trovi due cose. Una appartiene al calendario. L’altra appartiene al tempo. Non fidarti delle parole: osserva ciò che mostrano. Quando avrai capito entrambe, mettile insieme.',
+`<p class="p">Clicca gli oggetti dello studio. Ogni oggetto ti darà soltanto un indizio.</p>
 <div class="choices">
-<button class="choice" onclick="p1a()">CALENDARIO</button>
-<button class="choice" onclick="p1b()">OROLOGIO</button>
+<button class="choice" onclick="p1a()">OSSERVA IL CALENDARIO</button>
+<button class="choice" onclick="p1b()">OSSERVA L’OROLOGIO</button>
 </div>
 <div id="f1" class="feedback"></div>
-<div id="next1" class="hidden"><button class="open-btn next" onclick="finish(1,'31 OTTOBRE · 22:00');showPuzzle(2)">CONSERVA IL FRAMMENTO</button></div>`);
+<div id="next1" class="hidden"></div>`);
 }
+let c1=false,o1=false;
+function p1a(){c1=true;document.getElementById('f1').innerHTML='Il calendario mostra l’ultima casella del mese. <span class="small">Ricorda il numero.</span>';speak('L’ultima casella del mese. Ricorda il numero.');unlock1()}
+function p1b(){o1=true;document.getElementById('f1').innerHTML='Le lancette si incontrano esattamente sopra il quadrante. <span class="small">Ricorda l’ora.</span>';speak('Le lancette si incontrano esattamente sopra il quadrante. Ricorda l’ora.');unlock1()}
+function unlock1(){
+if(c1&&o1){
+document.getElementById('next1').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>31 OTTOBRE · 22:00</strong><button class="open-btn next" onclick="finish(1,'31 OTTOBRE · 22:00');showPuzzle(2)">PRENDI IL FRAMMENTO</button></div>`;
+document.getElementById('next1').classList.remove('hidden');
+speak('Avete trovato il primo frammento. Prendetelo. La casa non aspetterà.');
+}}
 let c1=false,o1=false;
 function p1a(){c1=true;document.getElementById('f1').innerHTML='Il mese muore nella sua ultima notte: <b>31 OTTOBRE</b>.';unlock1()}
 function p1b(){o1=true;document.getElementById('f1').innerHTML='Le lancette sono unite in alto: la casa usa l’ora <b>22:00</b>.';unlock1()}
 function unlock1(){if(c1&&o1)document.getElementById('next1').classList.remove('hidden')}
 function p2(){
 base(2,'Il ritratto',`
-<div class="room-title">IL RITRATTO</div><div class="frame" style="left:50%;top:45px;transform:translateX(-50%);width:170px;height:190px"><div class="portrait-head" style="left:57px;top:28px;width:55px;height:70px"></div><div class="portrait-body" style="left:37px;width:88px;height:90px"></div>
-<span style="position:absolute;top:20px;left:15px;color:#b49762">✦</span><span style="position:absolute;top:40px;right:14px;color:#b49762">☾</span><span style="position:absolute;bottom:55px;left:14px;color:#b49762">☾</span><span style="position:absolute;bottom:28px;right:15px;color:#b49762">✦</span></div>`,
-'Avete trovato il momento. Ma qualcuno ha lasciato qualcosa nel quadro. Non seguire ciò che brilla. Segui ciò che si ripete.',
-`<p class="p">Nel ritratto ci sono simboli diversi. Quattro, però, <b>si ripetono</b>. Toccateli nell’ordine indicato dalla cornice: alto, destra, basso, sinistra.</p>
+<div class="room-title">IL RITRATTO</div>
+<div class="frame" style="left:50%;top:45px;transform:translateX(-50%);width:170px;height:190px">
+<div class="portrait-head" style="left:57px;top:28px;width:55px;height:70px"></div>
+<div class="portrait-body" style="left:37px;width:88px;height:90px"></div>
+<span style="position:absolute;top:20px;left:15px;color:#b49762">✦</span>
+<span style="position:absolute;top:40px;right:14px;color:#b49762">☾</span>
+<span style="position:absolute;bottom:55px;left:14px;color:#b49762">☾</span>
+<span style="position:absolute;bottom:28px;right:15px;color:#b49762">✦</span></div>`,
+'Il quadro nasconde una parola. Ma prima dovete capire la lingua del pittore. Cercate la piccola targhetta sotto la cornice. Poi osservate ciò che si ripete.',
+`<p class="p">Prima trova la targhetta. Poi usa la legenda per decifrare soltanto i quattro simboli ripetuti.</p>
 <div class="choices">
-<button class="choice" onclick="pick2('L',0)">☾ ALTO</button>
-<button class="choice" onclick="pick2('I',1)">☾ DESTRA</button>
-<button class="choice" onclick="pick2('N',2)">☾ BASSO</button>
-<button class="choice" onclick="pick2('O',3)">☾ SINISTRA</button>
+<button class="choice" onclick="legend2()">CERCA LA TARGHETTA</button>
+</div>
+<div id="legend" class="feedback"></div>
+<div id="symbols2" class="hidden">
+<div class="choices">
+<button class="choice" onclick="pick2('L',0)">☾</button>
+<button class="choice" onclick="pick2('I',1)">✦</button>
+<button class="choice" onclick="pick2('N',2)">◇</button>
+<button class="choice" onclick="pick2('O',3)">♢</button>
 </div>
 <div class="letters"><span class="letter" id="l20">?</span><span class="letter" id="l21">?</span><span class="letter" id="l22">?</span><span class="letter" id="l23">?</span></div>
+</div>
 <div id="f2" class="feedback"></div>
-<div id="next2" class="hidden"><button class="open-btn next" onclick="finish(2,'LINO');showPuzzle(3)">CONSERVA IL FRAMMENTO</button></div>`);
+<div id="next2" class="hidden"></div>`);
+}
+function legend2(){
+document.getElementById('legend').innerHTML='Sul retro della targhetta: <b>“L’inizio della parola è il simbolo della luna. Poi segui la forma più semplice, poi la pietra, poi il suo riflesso.”</b>';
+document.getElementById('symbols2').classList.remove('hidden');
+speak('Sul retro della targhetta c’è una legenda. La luna apre la parola. Poi viene la forma più semplice. Poi la pietra. Infine il suo riflesso.');
 }
 let seq2=0;
-function pick2(letter,index){if(index!==seq2){document.getElementById('f2').textContent='Non ancora. Seguite l’ordine della cornice.';return}document.getElementById('l2'+index).textContent=letter;seq2++;if(seq2===4){document.getElementById('f2').innerHTML='Le quattro lettere formano <b>LINO</b>.';document.getElementById('next2').classList.remove('hidden')}}
+function pick2(letter,index){if(index!==seq2){document.getElementById('f2').textContent='Non ancora. Seguite l’ordine della cornice.';return}document.getElementById('l2'+index).textContent=letter;seq2++;if(seq2===4){document.getElementById('f2').innerHTML='Il ritratto si apre e lascia cadere un piccolo cartiglio.';document.getElementById('next2').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>LINO</strong><button class="open-btn next" onclick="finish(2,'LINO');showPuzzle(3)">PRENDI IL FRAMMENTO</button></div>`;document.getElementById('next2').classList.remove('hidden');speak('Il ritratto si apre. Avete trovato il secondo frammento.');}}
 function p3(){
 base(3,'La stanza delle chiavi',`
 <div class="room-title">LA STANZA DELLE CHIAVI</div>
@@ -187,11 +242,13 @@ base(3,'La stanza delle chiavi',`
 <div style="position:absolute;right:8%;top:58px;width:110px;height:145px;border:2px solid #624a35;background:#0d0a0b;z-index:2"></div>`,
 'Questa stanza non era vuota quando siamo arrivati. Sei chiavi. Sei serrature. Ma soltanto una è stata lasciata per voi.',
 `<p class="p">Tre indizi sono rimasti nella stanza: <b>non è la II</b>; <b>non ha una luna</b>; cerca <b>il corvo</b>.</p>
-<div class="choices">${['I · LUNA','II · CORVO','III · CHIAVE','IV · CORVO','V · LUNA','VI · SOLE'].map((x,i)=>`<button class="choice" onclick="key3(${i+1})">${x}</button>`).join('')}</div>
+<div class="choices">${['I · ☾','II · 🜂','III · ◇','IV · 🜁','V · ☾','VI · ☀'].map((x,i)=>`<button class="choice" onclick="key3(${i+1})">${x}</button>`).join('')}</div>
 <div id="f3" class="feedback"></div>
 <div id="next3" class="hidden"><button class="open-btn next" onclick="finish(3,'CADO');showPuzzle(4)">CONSERVA IL FRAMMENTO</button></div>`);
 }
-function key3(n){if(n===4){document.getElementById('f3').innerHTML='La serratura scatta. Dentro c’è un biglietto: <b>C A D O</b>.';document.getElementById('next3').classList.remove('hidden')}else document.getElementById('f3').textContent='Questa chiave non corrisponde a tutti gli indizi.'}
+function key3(n){if(n===4){document.getElementById('f3').innerHTML='La serratura scatta. Dentro c’è un biglietto piegato. La scritta sarà leggibile soltanto quando lo aprirai.';
+document.getElementById('next3').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>CADO</strong><button class="open-btn next" onclick="finish(3,'CADO');showPuzzle(4)">PRENDI IL FRAMMENTO</button></div>`;
+document.getElementById('next3').classList.remove('hidden');speak('La serratura scatta. Il biglietto era qui da tempo. Avete trovato il terzo frammento.');}else document.getElementById('f3').textContent='Questa chiave non corrisponde a tutti gli indizi.'}
 function p4(){
 base(4,'La lettera',`
 <div class="room-title">LA LETTERA</div><div class="desk"></div><div class="candle"></div>
@@ -208,7 +265,9 @@ base(4,'La lettera',`
 <div id="next4" class="hidden"><button class="open-btn next" onclick="finish(4,'VIA');showPuzzle(5)">CONSERVA IL FRAMMENTO</button></div>`);
 }
 let seq4=0;
-function line4(i){if(i!==seq4){document.getElementById('f4').textContent='La lettera va letta dall’alto verso il basso.';return}const a=['V','I','A'];document.getElementById('l4'+i).textContent=a[i];seq4++;if(seq4===3){document.getElementById('f4').innerHTML='Le iniziali formano <b>VIA</b>.';document.getElementById('next4').classList.remove('hidden')}}
+function line4(i){if(i!==seq4){document.getElementById('f4').textContent='La lettera va letta dall’alto verso il basso.';return}const a=['V','I','A'];document.getElementById('l4'+i).textContent=a[i];seq4++;if(seq4===3){document.getElementById('f4').innerHTML='Le tre iniziali si illuminano. Il significato appare soltanto adesso.';
+document.getElementById('next4').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>VIA</strong><button class="open-btn next" onclick="finish(4,'VIA');showPuzzle(5)">PRENDI IL FRAMMENTO</button></div>`;
+document.getElementById('next4').classList.remove('hidden');speak('Le tre iniziali si illuminano. Avete trovato il quarto frammento.');}}
 function p5(){
 base(5,'La casa delle sei porte',`
 <div class="room-title">LA CASA DELLE SEI PORTE</div>
@@ -219,7 +278,9 @@ ${[1,2,3,4,5,6].map((n,i)=>`<div style="position:absolute;bottom:22px;left:${7+i
 <div id="f5" class="feedback"></div>
 <div id="next5" class="hidden"><button class="open-btn next" onclick="finish(5,'6');finalScreen()">APRITE L’ULTIMO FRAMMENTO</button></div>`);
 }
-function door5(n){if(n===6){document.getElementById('f5').innerHTML='Questa porta non ha una stanza. Ha solo un numero: <b>6</b>.';document.getElementById('next5').classList.remove('hidden')}else document.getElementById('f5').textContent='Dietro questa porta c’è qualcosa. Non è quella che state cercando.'}
+function door5(n){if(n===6){document.getElementById('f5').innerHTML='Dietro questa porta non c’è una stanza. C’è un ultimo frammento.';
+document.getElementById('next5').innerHTML=`<div class="discovery"><div class="found">Frammento scoperto</div><strong>6</strong><button class="open-btn next" onclick="finish(5,'6');finalScreen()">RICOMPORRE IL MESSAGGIO</button></div>`;
+document.getElementById('next5').classList.remove('hidden');speak('La sesta porta era quella che non chiedeva di essere aperta. Ora avete tutti i frammenti.');}else document.getElementById('f5').textContent='Dietro questa porta c’è qualcosa. Non è quella che state cercando.'}
 function finish(n,val){fragments[n-1]=val}
 function finalScreen(){
 document.getElementById('game').innerHTML=`
@@ -227,6 +288,7 @@ document.getElementById('game').innerHTML=`
 <div class="kicker">La casa vi ha lasciato uscire</div>
 <div class="scene" style="min-height:210px"><div class="room-title">ULTIMO MESSAGGIO</div><div class="candle"></div><div class="desk"></div></div>
 <div class="card">
+<button class="voiceBtn" onclick="speak('Avete trovato tutto. Mettete insieme i frammenti. Via Cadolino sei. Trentuno ottobre, ore ventidue. La porta vi aspetta.')"><span class="mic">◉</span> ASCOLTA IL MESSAGGIO</button>
 <h2 class="h" style="text-align:center">Avete trovato tutto.</h2>
 <p class="p" style="text-align:center">Mettete insieme i frammenti. Non cambiate il loro ordine.</p>
 <div class="final-address">VIA CADOLINO 6</div>
