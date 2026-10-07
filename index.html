@@ -5,179 +5,236 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>HALLOWEEN SECRET</title>
 <style>
-:root{--ink:#241d19;--cream:#efe4d0;--paper:#f4ead8;--gold:#b9955b;--wine:#63383b;--muted:#6f6258}
+:root{
+  --black:#090708;
+  --charcoal:#151012;
+  --wine:#3b0d18;
+  --blood:#6e1724;
+  --burgundy:#8e2633;
+  --bone:#e7dcc8;
+  --muted:#a89b8a;
+  --gold:#b49762;
+  --gold2:#d0b67b;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#181411;color:var(--ink);font-family:Georgia,"Times New Roman",serif}
-#app{min-height:100vh;background:radial-gradient(circle at 70% 20%,#4b4038 0,#241e1a 35%,#111 100%);display:flex;align-items:center;justify-content:center;padding:14px}
-.scene{width:min(1100px,100%);min-height:calc(100vh - 28px);position:relative;overflow:hidden;border-radius:22px;box-shadow:0 25px 80px #0009;background:linear-gradient(120deg,#2b231e,#6c5746 50%,#1a1715);display:flex;align-items:flex-end}
-.scene:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 22%,#f4d59c33,transparent 18%),linear-gradient(180deg,#0001,#0008)}
-.content{position:relative;z-index:2;width:100%;padding:34px clamp(20px,5vw,64px) 38px}
-.kicker{letter-spacing:.24em;text-transform:uppercase;color:#e1c796;font-size:12px}
-.title{font-size:clamp(34px,7vw,74px);color:#f4ead8;margin:10px 0 12px;text-shadow:0 3px 18px #000}
-.subtitle{color:#eadfce;max-width:620px;line-height:1.6;font-size:18px}
-.card{background:#efe4d0ee;border:1px solid #d6bb8b;border-radius:18px;padding:24px;max-width:760px;box-shadow:0 14px 45px #0006;margin-top:22px}
-.card h2{margin-top:0;font-size:25px}
-.letter{background:#ead9b9;padding:22px;border-radius:10px;box-shadow:inset 0 0 35px #8a673522;line-height:1.75;font-size:18px}
-.hint{color:var(--muted);font-style:italic}
-.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-button,input{font:inherit}
-button{border:0;border-radius:12px;padding:12px 17px;background:#5e3b3e;color:#fff3df;cursor:pointer;box-shadow:0 5px 14px #0002}
-button:hover{filter:brightness(1.1)}
-button.secondary{background:#756557}
-input{border:1px solid #bba17a;background:#f7eddb;border-radius:10px;padding:12px 14px;width:min(300px,100%);color:#211a16}
-.option{background:#f7eddb;color:#2a211c;border:1px solid #bda57e}
-.option.good{outline:3px solid #9d7b43}
-.option.bad{animation:shake .22s}
-@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.objects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.object{min-height:90px}
-.doors{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.door{height:190px;border-radius:14px;background:linear-gradient(90deg,#3a2922,#6e4d37,#35241e);color:#e9d6b3;border:1px solid #b48b56;display:flex;align-items:flex-end;justify-content:center;font-size:22px;padding-bottom:18px;position:relative}
-.door:before{content:"";position:absolute;inset:12px;border:1px solid #b9955b66;border-radius:8px}
-.door small{position:relative;z-index:1}
-.symbols{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.symbol{font-size:34px;height:70px;background:#f8edda;color:#332822}
-.symbol.selected{background:#c9ad78}
-.reveal{font-size:clamp(28px,6vw,58px);letter-spacing:.12em;text-align:center;color:#5e3b3e;margin:10px 0}
-.fragment{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#8b6d3e}
-.progress{position:absolute;top:14px;left:18px;right:18px;display:flex;gap:6px;z-index:4}
-.dot{height:5px;flex:1;border-radius:10px;background:#ffffff33}
-.dot.on{background:#d7b878}
-.timer{position:absolute;top:28px;right:28px;color:#ead9b9;z-index:5;font-size:14px}
-.map{display:inline-block;text-decoration:none;color:#fff3df;background:#63383b;padding:13px 18px;border-radius:12px;margin-top:14px}
-.fade{animation:fade .5s}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-@media(max-width:650px){.objects,.doors{grid-template-columns:repeat(2,1fr)}.symbols{grid-template-columns:repeat(3,1fr)}.door{height:150px}.content{padding-top:56px}}
+html,body{margin:0;min-height:100%;background:#080607;color:var(--bone);font-family:Georgia,"Times New Roman",serif}
+body{overflow-x:hidden}
+button{font:inherit}
+#app{min-height:100vh;position:relative;overflow:hidden}
+.screen{
+  min-height:100vh;display:none;position:relative;padding:28px 20px 36px;
+  background:
+    radial-gradient(circle at 50% 24%,rgba(108,35,43,.28),transparent 34%),
+    radial-gradient(circle at 50% 100%,rgba(49,11,19,.7),transparent 48%),
+    linear-gradient(145deg,#090708 0%,#171013 52%,#080607 100%);
+}
+.screen.active{display:flex;flex-direction:column}
+.screen:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.45;
+  background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0,rgba(255,255,255,.018) 1px,transparent 1px,transparent 5px);
+}
+.vignette{position:absolute;inset:-5%;pointer-events:none;background:radial-gradient(circle,transparent 38%,rgba(0,0,0,.72) 100%);z-index:1}
+.content{position:relative;z-index:2;width:min(680px,100%);margin:auto}
+.kicker{letter-spacing:.38em;text-transform:uppercase;color:var(--gold);font-size:11px;text-align:center;margin-bottom:20px}
+.title{
+  text-align:center;font-size:clamp(42px,11vw,82px);line-height:.9;letter-spacing:.06em;
+  color:#efe5d4;text-shadow:0 0 22px rgba(142,38,51,.45),0 3px 0 #241017;
+  margin:0;text-transform:uppercase
+}
+.subtitle{text-align:center;color:#a99d8d;letter-spacing:.28em;font-size:12px;margin:20px 0 44px;text-transform:uppercase}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:22px 0 30px;opacity:.65}
+.open-btn,.choice{
+  border:1px solid rgba(180,151,98,.65);background:linear-gradient(180deg,#42131d,#250b12);
+  color:#f0e4d1;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;
+  box-shadow:0 12px 35px rgba(0,0,0,.45),inset 0 0 20px rgba(180,151,98,.06);
+  transition:.2s
+}
+.open-btn{display:block;margin:0 auto;padding:17px 28px;font-size:12px}
+.open-btn:hover,.choice:hover{border-color:var(--gold2);transform:translateY(-1px);filter:brightness(1.12)}
+.date{margin-top:28px;text-align:center;color:#776c60;font-size:11px;letter-spacing:.2em}
+.scene{
+  min-height:250px;border:1px solid rgba(180,151,98,.25);position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 35%,rgba(160,116,63,.22),transparent 13%),
+    linear-gradient(180deg,rgba(57,25,26,.85),rgba(10,8,9,.98));
+  box-shadow:inset 0 0 80px rgba(0,0,0,.8),0 18px 50px rgba(0,0,0,.35);
+  margin-bottom:25px
+}
+.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.5),transparent 45%,rgba(0,0,0,.6))}
+.room-title{position:absolute;top:20px;left:20px;z-index:3;color:var(--gold);font-size:11px;letter-spacing:.28em;text-transform:uppercase}
+.candle{position:absolute;width:14px;height:55px;background:#d6c39f;bottom:43px;left:50%;transform:translateX(-50%);z-index:2;box-shadow:0 0 25px rgba(222,170,82,.25)}
+.candle:before{content:"";position:absolute;width:10px;height:20px;border-radius:50%;background:#e3a93e;top:-19px;left:2px;box-shadow:0 0 18px 7px rgba(224,155,43,.38)}
+.desk{position:absolute;left:10%;right:10%;height:20px;bottom:40px;background:#251616;border:1px solid #573d2d;z-index:2;box-shadow:0 12px 0 #130c0d}
+.clock{position:absolute;width:86px;height:86px;border:3px solid #8b7048;border-radius:50%;right:16%;top:65px;z-index:2;background:#171012;box-shadow:0 0 30px rgba(181,137,72,.12)}
+.clock:before,.clock:after{content:"";position:absolute;left:50%;top:50%;width:3px;background:#d0b67b;transform-origin:50% 100%;border-radius:2px}
+.clock:before{height:28px;transform:translate(-50%,-100%) rotate(0deg)}
+.clock:after{height:22px;transform:translate(-50%,-100%) rotate(90deg)}
+.frame{position:absolute;left:12%;top:65px;width:100px;height:135px;border:7px solid #6d5337;background:linear-gradient(145deg,#211416,#090708);z-index:2;box-shadow:0 0 25px rgba(0,0,0,.7)}
+.portrait-head{width:44px;height:55px;border-radius:50%;background:#80695d;position:absolute;top:22px;left:21px;opacity:.72}
+.portrait-body{width:68px;height:65px;border-radius:50% 50% 0 0;background:#3d2930;position:absolute;bottom:10px;left:9px}
+.progress{display:flex;gap:6px;justify-content:center;margin:0 0 22px}
+.dot{width:8px;height:8px;border-radius:50%;border:1px solid #654653;background:#180d11}
+.dot.done{background:var(--burgundy);box-shadow:0 0 10px rgba(142,38,51,.6)}
+.card{
+  background:linear-gradient(145deg,rgba(29,18,20,.96),rgba(13,10,11,.96));
+  border:1px solid rgba(180,151,98,.25);padding:25px;box-shadow:0 20px 55px rgba(0,0,0,.45)
+}
+.h{font-size:24px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 8px;color:#eadfcd}
+.p{color:#a99d8e;line-height:1.65;font-size:15px;margin:0 0 20px}
+.voice{border-left:2px solid var(--blood);padding:10px 0 10px 15px;color:#cbbdac;font-style:italic;line-height:1.6;margin:18px 0 22px}
+.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.choice{padding:16px 10px;font-size:12px;min-height:54px}
+.feedback{min-height:28px;margin-top:16px;color:var(--gold2);font-size:13px;line-height:1.5}
+.next{margin-top:18px;width:100%}
+.small{font-size:10px;letter-spacing:.18em;color:#776b5e;text-transform:uppercase}
+.letters{display:flex;justify-content:center;gap:9px;margin:20px 0}
+.letter{width:46px;height:52px;border:1px solid rgba(180,151,98,.35);display:grid;place-items:center;color:#e7dcc8;background:#120c0f;font-size:23px}
+.hidden{display:none!important}
+.final-address{text-align:center;font-size:clamp(30px,8vw,55px);line-height:1.05;letter-spacing:.12em;color:#eee1ce;text-transform:uppercase;margin:24px 0 12px;text-shadow:0 0 22px rgba(142,38,51,.4)}
+.final-date{text-align:center;color:var(--gold2);letter-spacing:.25em;font-size:13px;margin-bottom:28px}
+.maps{display:block;text-decoration:none;text-align:center}
+@media(max-width:500px){.choices{grid-template-columns:1fr}.scene{min-height:235px}.card{padding:20px}}
 </style>
 </head>
 <body>
-<div id="app"></div>
-<script>
-const app=document.getElementById('app');
-let step=0,timer=600,tick=null,d1=0,moons=0,seq='';
-const fragments={date:"31 OTTOBRE · 22:00",via:"VIA",cado:"CADO",lino:"LINO",num:"6"};
+<div id="app">
 
-function startTimer(){
-  clearInterval(tick);
-  tick=setInterval(function(){
-    timer--;
-    if(timer<=0){timer=0;clearInterval(tick);}
-    const el=document.getElementById('timer');
-    if(el) el.textContent=String(Math.floor(timer/60)).padStart(2,'0')+":"+String(timer%60).padStart(2,'0');
-  },1000);
+<section id="intro" class="screen active">
+<div class="vignette"></div><div class="content">
+<div class="kicker">Un invito che non dovevate trovare</div>
+<h1 class="title">Halloween<br>Secret</h1>
+<div class="subtitle">31 Ottobre · 22:00</div>
+<div class="rule"></div>
+<p class="p" style="text-align:center;max-width:470px;margin:0 auto 28px">
+Cinque stanze. Cinque frammenti. Una destinazione.<br>
+<strong style="color:#d4c6b3">Non fidatevi della prima cosa che vedete.</strong>
+</p>
+<button class="open-btn" onclick="startGame()">ENTRA NELLA CASA</button>
+<div class="date">Il gioco comincia quando la porta si apre.</div>
+</div>
+</section>
+
+<div id="game"></div>
+</div>
+
+<script>
+const fragments=[];
+let step=0;
+function startGame(){showPuzzle(1)}
+function base(num,title,sceneHTML,voice,bodyHTML){
+  document.getElementById('game').innerHTML=`
+  <section class="screen active">
+    <div class="vignette"></div><div class="content">
+      <div class="progress">${[1,2,3,4,5].map(n=>`<span class="dot ${n<=num?'done':''}"></span>`).join('')}</div>
+      <div class="scene">${sceneHTML}</div>
+      <div class="card">
+        <div class="small">Stanza ${num} di 5</div>
+        <h2 class="h">${title}</h2>
+        <div class="voice">“${voice}”</div>
+        ${bodyHTML}
+      </div>
+    </div>
+  </section>`;
 }
-function shell(inner){
-  app.innerHTML='<div class="scene"><div class="progress">'+[0,1,2,3,4].map(function(i){return '<i class="dot '+(i<step?'on':'')+'"></i>';}).join('')+
-  '</div><div class="timer" id="timer">'+String(Math.floor(timer/60)).padStart(2,'0')+":"+String(timer%60).padStart(2,'0')+
-  '</div><div class="content fade">'+inner+'</div></div>';
-}
-function intro(){
-  shell('<div class="kicker">31 OTTOBRE · ORE 22:00</div><div class="title">HALLOWEEN SECRET</div>'+
-  '<div class="subtitle">La casa ha nascosto un luogo. Cinque stanze, cinque frammenti. Avete dieci minuti per ricomporre il segreto.</div>'+
-  '<div class="card"><h2>La porta è già aperta.</h2><p>Entrate. E cercate con calma.</p><button onclick="step=1;startTimer();p1()">ENTRA NEL SEGRETO</button></div>');
+function showPuzzle(n){
+ step=n;
+ if(n===1)p1();
+ if(n===2)p2();
+ if(n===3)p3();
+ if(n===4)p4();
+ if(n===5)p5();
 }
 function p1(){
-  d1=0;
-  shell('<div class="kicker">STANZA I · LO STUDIO</div><div class="title">Il momento</div>'+
-  '<div class="card"><p>Una lettera è aperta sulla scrivania.</p>'+
-  '<div class="letter"><b>«Non cercare la data scritta.</b><br>La notte dei fantasmi è l’ultima notte di ottobre.<br><br>'+
-  'Quando entrambe le lancette si incontrano in alto, la casa apre le sue porte.<br><br><span class="hint">Trova il giorno. Trova l’ora.</span></div>'+
-  '<div class="row"><button class="option" onclick="this.textContent=\'31\';this.disabled=true;checkDate()">CALENDARIO</button>'+
-  '<button class="option" onclick="this.textContent=\'22:00\';this.disabled=true;checkDate()">OROLOGIO</button></div><p id="p1msg"></p></div>');
+base(1,'Lo studio',`
+<div class="room-title">LO STUDIO</div><div class="frame"><div class="portrait-head"></div><div class="portrait-body"></div></div>
+<div class="clock"></div><div class="candle"></div><div class="desk"></div>`,
+'Non cercare la data scritta. Cerca la notte che non appartiene a nessun’altra. Il mese muore. L’orologio, invece, non usa il tempo dei vivi. Quando le lancette si incontrano in alto, la casa apre le sue porte.',
+`<p class="p">Due oggetti hanno una risposta. Il calendario indica <b>l’ultima notte di ottobre</b>. L’orologio indica l’ora in cui le lancette sono entrambe in alto.</p>
+<div class="choices">
+<button class="choice" onclick="p1a()">CALENDARIO</button>
+<button class="choice" onclick="p1b()">OROLOGIO</button>
+</div>
+<div id="f1" class="feedback"></div>
+<div id="next1" class="hidden"><button class="open-btn next" onclick="finish(1,'31 OTTOBRE · 22:00');showPuzzle(2)">CONSERVA IL FRAMMENTO</button></div>`);
 }
-function checkDate(){
-  d1++;
-  if(d1===2){
-    document.getElementById('p1msg').innerHTML='<div class="reveal">'+fragments.date+'</div><div class="fragment">FRAMMENTO I ACQUISITO</div><button onclick="step=2;p2()">CONTINUA</button>';
-  }
-}
+let c1=false,o1=false;
+function p1a(){c1=true;document.getElementById('f1').innerHTML='Il mese muore nella sua ultima notte: <b>31 OTTOBRE</b>.';unlock1()}
+function p1b(){o1=true;document.getElementById('f1').innerHTML='Le lancette sono unite in alto: la casa usa l’ora <b>22:00</b>.';unlock1()}
+function unlock1(){if(c1&&o1)document.getElementById('next1').classList.remove('hidden')}
 function p2(){
-  moons=0;
-  const symbols=['🌙','🕯️','🌹','👁️','🌙','🗝️','🌹','🌙','🕯️','👁️','🌙','🗝️'];
-  const grid=symbols.map(function(s,i){return '<button class="symbol" onclick="findMoon(this,\''+s+'\')">'+s+'</button>';}).join('');
-  shell('<div class="kicker">STANZA II · IL RITRATTO</div><div class="title">Guarda meglio</div>'+
-  '<div class="card"><p>Una voce sussurra:</p><p><i>«Non seguire ciò che brilla. Segui ciò che si ripete.»</i></p>'+
-  '<div class="symbols">'+grid+'</div><p id="p2msg"></p></div>');
+base(2,'Il ritratto',`
+<div class="room-title">IL RITRATTO</div><div class="frame" style="left:50%;top:45px;transform:translateX(-50%);width:170px;height:190px"><div class="portrait-head" style="left:57px;top:28px;width:55px;height:70px"></div><div class="portrait-body" style="left:37px;width:88px;height:90px"></div>
+<span style="position:absolute;top:20px;left:15px;color:#b49762">✦</span><span style="position:absolute;top:40px;right:14px;color:#b49762">☾</span><span style="position:absolute;bottom:55px;left:14px;color:#b49762">☾</span><span style="position:absolute;bottom:28px;right:15px;color:#b49762">✦</span></div>`,
+'Avete trovato il momento. Ma qualcuno ha lasciato qualcosa nel quadro. Non seguire ciò che brilla. Segui ciò che si ripete.',
+`<p class="p">Nel ritratto ci sono simboli diversi. Quattro, però, <b>si ripetono</b>. Toccateli nell’ordine indicato dalla cornice: alto, destra, basso, sinistra.</p>
+<div class="choices">
+<button class="choice" onclick="pick2('L',0)">☾ ALTO</button>
+<button class="choice" onclick="pick2('I',1)">☾ DESTRA</button>
+<button class="choice" onclick="pick2('N',2)">☾ BASSO</button>
+<button class="choice" onclick="pick2('O',3)">☾ SINISTRA</button>
+</div>
+<div class="letters"><span class="letter" id="l20">?</span><span class="letter" id="l21">?</span><span class="letter" id="l22">?</span><span class="letter" id="l23">?</span></div>
+<div id="f2" class="feedback"></div>
+<div id="next2" class="hidden"><button class="open-btn next" onclick="finish(2,'LINO');showPuzzle(3)">CONSERVA IL FRAMMENTO</button></div>`);
 }
-function findMoon(b,s){
-  if(s==='🌙'&&!b.classList.contains('selected')){
-    b.classList.add('selected');
-    moons++;
-    b.textContent=['L','I','N','O'][moons-1];
-    if(moons===4){
-      document.getElementById('p2msg').innerHTML='<div class="reveal">LINO</div><div class="fragment">FRAMMENTO II ACQUISITO</div><button onclick="step=3;p3()">CONTINUA</button>';
-    }
-  }else if(s!=='🌙'){
-    b.classList.add('bad');
-    setTimeout(function(){b.classList.remove('bad');},250);
-  }
-}
+let seq2=0;
+function pick2(letter,index){if(index!==seq2){document.getElementById('f2').textContent='Non ancora. Seguite l’ordine della cornice.';return}document.getElementById('l2'+index).textContent=letter;seq2++;if(seq2===4){document.getElementById('f2').innerHTML='Le quattro lettere formano <b>LINO</b>.';document.getElementById('next2').classList.remove('hidden')}}
 function p3(){
-  const keys=['🌙','🐦','🌹','🐍','👁️','🗝️'];
-  const grid=keys.map(function(s,i){
-    return '<button class="object option" onclick="keyPick(this,'+i+')">CHIAVE '+(i+1)+'<br><span style="font-size:30px">'+s+'</span></button>';
-  }).join('');
-  shell('<div class="kicker">STANZA III · LE CHIAVI</div><div class="title">La stanza delle chiavi</div>'+
-  '<div class="card"><p>Sei chiavi. Sei simboli. La stanza custodisce un solo frammento.</p>'+
-  '<div class="objects">'+grid+'</div><p id="p3msg" class="hint">«La chiave che cerchi non ha una luna. Il corvo è già stato usato.»</p></div>');
+base(3,'La stanza delle chiavi',`
+<div class="room-title">LA STANZA DELLE CHIAVI</div>
+<div class="desk"></div><div class="candle"></div>
+<div style="position:absolute;left:8%;top:65px;width:80px;height:105px;border:4px solid #5c4734;background:#181012;z-index:2"></div>
+<div style="position:absolute;right:8%;top:58px;width:110px;height:145px;border:2px solid #624a35;background:#0d0a0b;z-index:2"></div>`,
+'Questa stanza non era vuota quando siamo arrivati. Sei chiavi. Sei serrature. Ma soltanto una è stata lasciata per voi.',
+`<p class="p">Tre indizi sono rimasti nella stanza: <b>non è la II</b>; <b>non ha una luna</b>; cerca <b>il corvo</b>.</p>
+<div class="choices">${['I · LUNA','II · CORVO','III · CHIAVE','IV · CORVO','V · LUNA','VI · SOLE'].map((x,i)=>`<button class="choice" onclick="key3(${i+1})">${x}</button>`).join('')}</div>
+<div id="f3" class="feedback"></div>
+<div id="next3" class="hidden"><button class="open-btn next" onclick="finish(3,'CADO');showPuzzle(4)">CONSERVA IL FRAMMENTO</button></div>`);
 }
-function keyPick(b,i){
-  if(i===1){
-    b.classList.add('good');
-    document.getElementById('p3msg').innerHTML='<div class="reveal">CADO</div><div class="fragment">FRAMMENTO III ACQUISITO</div><button onclick="step=4;p4()">CONTINUA</button>';
-  }else{
-    b.classList.add('bad');
-    setTimeout(function(){b.classList.remove('bad');},250);
-  }
-}
+function key3(n){if(n===4){document.getElementById('f3').innerHTML='La serratura scatta. Dentro c’è un biglietto: <b>C A D O</b>.';document.getElementById('next3').classList.remove('hidden')}else document.getElementById('f3').textContent='Questa chiave non corrisponde a tutti gli indizi.'}
 function p4(){
-  seq='';
-  shell('<div class="kicker">STANZA IV · LA LETTERA</div><div class="title">Le righe mancanti</div>'+
-  '<div class="card"><p>Tre righe, ma solo una sequenza apre il cassetto.</p>'+
-  '<div class="letter" id="lines">'+
-  '<button class="option" onclick="line(this,\'V\')">Vedo la strada dalla finestra.</button>'+
-  '<button class="option" onclick="line(this,\'I\')">Il cancello è ancora aperto.</button>'+
-  '<button class="option" onclick="line(this,\'A\')">A volte, di notte, qualcuno passa.</button>'+
-  '</div><p id="p4msg"></p></div>');
+base(4,'La lettera',`
+<div class="room-title">LA LETTERA</div><div class="desk"></div><div class="candle"></div>
+<div style="position:absolute;left:50%;top:52px;transform:translateX(-50%) rotate(-2deg);width:230px;height:150px;background:#d9c8aa;z-index:2;box-shadow:0 15px 35px #000;color:#34231e;padding:22px;font-size:12px;line-height:1.8">Vedo la strada dalla finestra.<br>Il cancello è ancora aperto.<br>A volte, di notte, qualcuno passa.</div>`,
+'Una lettera. Tre righe. Non serve leggere tra le parole. Serve guardare dove cominciano.',
+`<p class="p">Toccate le righe dall’alto verso il basso. Le iniziali vi diranno ciò che manca.</p>
+<div class="choices">
+<button class="choice" onclick="line4(0)">Vedo la strada...</button>
+<button class="choice" onclick="line4(1)">Il cancello...</button>
+<button class="choice" onclick="line4(2)">A volte...</button>
+</div>
+<div class="letters"><span class="letter" id="l40">?</span><span class="letter" id="l41">?</span><span class="letter" id="l42">?</span></div>
+<div id="f4" class="feedback"></div>
+<div id="next4" class="hidden"><button class="open-btn next" onclick="finish(4,'VIA');showPuzzle(5)">CONSERVA IL FRAMMENTO</button></div>`);
 }
-function line(b,l){
-  if(b.disabled)return;
-  b.disabled=true;
-  seq+=l;
-  b.style.opacity=.55;
-  if(seq==='VIA'){
-    document.getElementById('p4msg').innerHTML='<div class="reveal">VIA</div><div class="fragment">FRAMMENTO IV ACQUISITO</div><button onclick="step=5;p5()">CONTINUA</button>';
-  }else if(!'VIA'.startsWith(seq)){
-    seq='';
-    document.querySelectorAll('#lines button').forEach(function(x){x.disabled=false;x.style.opacity=1;});
-    document.getElementById('p4msg').textContent='Le righe tornano a posto...';
-  }
-}
+let seq4=0;
+function line4(i){if(i!==seq4){document.getElementById('f4').textContent='La lettera va letta dall’alto verso il basso.';return}const a=['V','I','A'];document.getElementById('l4'+i).textContent=a[i];seq4++;if(seq4===3){document.getElementById('f4').innerHTML='Le iniziali formano <b>VIA</b>.';document.getElementById('next4').classList.remove('hidden')}}
 function p5(){
-  const doors=[1,2,3,4,5,6].map(function(n){
-    return '<button class="door" onclick="doorPick(this,'+n+')"><small>PORTA '+n+'</small></button>';
-  }).join('');
-  shell('<div class="kicker">STANZA V · LE SEI PORTE</div><div class="title">La casa delle sei porte</div>'+
-  '<div class="card"><p><i>«Cinque portano da qualche parte. Una porta non ha bisogno di essere aperta.»</i></p>'+
-  '<div class="doors">'+doors+'</div><p id="p5msg" class="hint"></p></div>');
+base(5,'La casa delle sei porte',`
+<div class="room-title">LA CASA DELLE SEI PORTE</div>
+${[1,2,3,4,5,6].map((n,i)=>`<div style="position:absolute;bottom:22px;left:${7+i*15.5}%;width:12%;height:150px;border:2px solid #604934;background:linear-gradient(90deg,#171011,#2a1819,#120c0d);z-index:2"><span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#b49762;font-size:14px">${n}</span></div>`).join('')}`,
+'Avete trovato quasi tutto. Questa volta non cercate una parola. Cercate la porta giusta.',
+`<p class="p">Cinque portano da qualche parte. <b>Una porta non ha bisogno di essere aperta.</b> Esaminatele. Solo una non ha nulla da mostrare.</p>
+<div class="choices">${[1,2,3,4,5,6].map(n=>`<button class="choice" onclick="door5(${n})">PORTA ${n}</button>`).join('')}</div>
+<div id="f5" class="feedback"></div>
+<div id="next5" class="hidden"><button class="open-btn next" onclick="finish(5,'6');finalScreen()">APRITE L’ULTIMO FRAMMENTO</button></div>`);
 }
-function doorPick(b,n){
-  if(n===6){
-    b.style.outline='3px solid #d7b878';
-    document.getElementById('p5msg').innerHTML='<div class="reveal">6</div><div class="fragment">FRAMMENTO V ACQUISITO</div><button onclick="finale()">RICOMPOSTA IL SEGRETO</button>';
-  }else{
-    b.classList.add('bad');
-    setTimeout(function(){b.classList.remove('bad');},250);
-  }
+function door5(n){if(n===6){document.getElementById('f5').innerHTML='Questa porta non ha una stanza. Ha solo un numero: <b>6</b>.';document.getElementById('next5').classList.remove('hidden')}else document.getElementById('f5').textContent='Dietro questa porta c’è qualcosa. Non è quella che state cercando.'}
+function finish(n,val){fragments[n-1]=val}
+function finalScreen(){
+document.getElementById('game').innerHTML=`
+<section class="screen active"><div class="vignette"></div><div class="content">
+<div class="kicker">La casa vi ha lasciato uscire</div>
+<div class="scene" style="min-height:210px"><div class="room-title">ULTIMO MESSAGGIO</div><div class="candle"></div><div class="desk"></div></div>
+<div class="card">
+<h2 class="h" style="text-align:center">Avete trovato tutto.</h2>
+<p class="p" style="text-align:center">Mettete insieme i frammenti. Non cambiate il loro ordine.</p>
+<div class="final-address">VIA CADOLINO 6</div>
+<div class="final-date">31 OTTOBRE · 22:00</div>
+<a class="open-btn maps" href="https://www.google.com/maps/search/?api=1&query=Via+Cadolino+6" target="_blank" rel="noopener">APRI LA MAPPA</a>
+<div class="date">Non arrivate prima. Non bussate due volte.</div>
+</div></div></section>`;
 }
-function finale(){
-  clearInterval(tick);
-  app.innerHTML='<div class="scene"><div class="content fade"><div class="kicker">DESTINAZIONE SBLOCCATA</div>'+
-  '<div class="title">Avete trovato la festa.</div><div class="card" style="text-align:center">'+
-  '<div class="reveal">VIA CADOLINO 6</div><p><b>31 OTTOBRE · 22:00</b></p><p>La casa vi aspetta.</p>'+
-  '<a class="map" href="https://www.google.com/maps/search/?api=1&query=Via%20Cadolino%206" target="_blank">APRI LA MAPPA</a></div></div></div>';
-}
-intro();
 </script>
 </body>
 </html>
