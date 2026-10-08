@@ -1,36 +1,27 @@
 (() => {
   const screens = [...document.querySelectorAll('.screen')];
-  const normalize = v => String(v ?? '').trim().toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  let current = 1;
+  const normalize = value => String(value ?? '').trim().toUpperCase().replace(/\s+/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  let current = 0;
 
   const show = id => {
-    screens.forEach(s => s.classList.remove('active'));
+    screens.forEach(screen => screen.classList.remove('active'));
     const next = document.getElementById(id);
     if (next) next.classList.add('active');
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const stopAllAudio = () => {
-    document.querySelectorAll('audio').forEach(audio => {
-      audio.pause();
-      audio.currentTime = 0;
-    });
-  };
+  const stopAudio = () => document.querySelectorAll('audio').forEach(audio => {
+    audio.pause();
+    audio.currentTime = 0;
+  });
 
   const playAudioFor = id => {
     const screen = document.getElementById(id);
-    if (!screen) return;
-    const audio = screen.querySelector('audio');
+    const audio = screen?.querySelector('audio');
     if (!audio) return;
-
-    stopAllAudio();
-    audio.volume = 1;
-    audio.currentTime = 0;
-
-    const promise = audio.play();
-    if (promise && typeof promise.catch === 'function') {
-      promise.catch(() => {});
-    }
+    stopAudio();
+    const attempt = audio.play();
+    if (attempt && attempt.catch) attempt.catch(() => {});
   };
 
   const feedback = (screen, message, ok = false) => {
@@ -40,47 +31,47 @@
     box.className = `feedback${ok ? ' success' : ''}`;
   };
 
-  const nextScreenId = () => current < 5 ? `enigma-${current + 1}` : 'finale';
-
   const advance = () => {
-    if (current < 5) {
-      current += 1;
-      show(`enigma-${current}`);
-    } else {
-      show('finale');
-    }
+    current += 1;
+    if (current <= 5) show(`enigma-${current}`);
+    else show('finale');
   };
 
-  document.getElementById('enterButton').addEventListener('click', () => {
+  document.getElementById('enterButton')?.addEventListener('click', () => {
     current = 1;
     show('enigma-1');
     playAudioFor('enigma-1');
   });
 
-  document.querySelectorAll('.answer-form').forEach(form => {
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const screen = form.closest('.screen');
-      const value = normalize(form.querySelector('input').value);
-      const expected = normalize(form.dataset.answer);
-
-      if (value === expected) {
-        feedback(screen, '✓ Il sigillo ha riconosciuto la risposta.', true);
-        playAudioFor(nextScreenId());
-        setTimeout(advance, 650);
+  document.querySelectorAll('.back-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const target = Number(button.dataset.back);
+      if (target <= 0) {
+        current = 0;
+        show('intro');
       } else {
-        feedback(screen, '✕ Non è la chiave. Riprova.');
+        current = target;
+        show(`enigma-${target}`);
       }
     });
   });
 
-  document.querySelectorAll('.hint-button').forEach(button => {
-    button.addEventListener('click', () => {
-      const hint = document.getElementById(button.dataset.hint);
-      if (!hint) return;
-      hint.classList.toggle('hidden');
-      button.textContent = hint.classList.contains('hidden')
-        ? 'MOSTRA INDIZIO' : 'NASCONDI INDIZIO';
+  document.querySelectorAll('.answer-form').forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const screen = form.closest('.screen');
+      const value = normalize(form.querySelector('input')?.value);
+      const expected = normalize(form.dataset.answer);
+      if (value === expected) {
+        feedback(screen, '✓ Il sigillo ha riconosciuto la risposta.', true);
+        setTimeout(() => {
+          advance();
+          if (current <= 5) playAudioFor(`enigma-${current}`);
+          else playAudioFor('finale');
+        }, 650);
+      } else {
+        feedback(screen, '✕ Non è la chiave. Riprova.');
+      }
     });
   });
 
@@ -88,43 +79,63 @@
     document.querySelectorAll(selector).forEach(button => {
       button.addEventListener('click', () => {
         const screen = button.closest('.screen');
-        document.querySelectorAll(`${selector}.selected`)
-          .forEach(x => x.classList.remove('selected'));
+        if (screen.dataset.completed === 'true') return;
+        document.querySelectorAll(`${selector}.selected`).forEach(item => item.classList.remove('selected'));
         button.classList.add('selected');
-
         if (button.dataset.answer === 'YES') {
-          feedback(screen, '✓ Il sigillo ha riconosciuto il frammento.', true);
-          playAudioFor(nextScreenId());
-          setTimeout(advance, 650);
+          screen.dataset.completed = 'true';
+          feedback(screen, '✓ Il sigillo ha riconosciuto la risposta.', true);
+          setTimeout(() => {
+            advance();
+            if (current <= 5) playAudioFor(`enigma-${current}`);
+            else playAudioFor('finale');
+          }, 650);
         } else {
-          feedback(screen, '✕ Questo simbolo non appartiene alla verità.');
+          feedback(screen, '✕ Questa non è la risposta.');
         }
       });
     });
   };
 
   choiceHandler('.symbol-choice');
-  choiceHandler('.fragment-choice');
-  choiceHandler('.shadow-choice');
-  choiceHandler('.candle-choice');
+
+  // Interactive five-door finale puzzle.
+  document.querySelectorAll('.door-choice').forEach(button => {
+    button.addEventListener('click', () => {
+      const screen = button.closest('.screen');
+      if (screen.dataset.completed === 'true') return;
+      if (button.dataset.answer === 'YES') {
+        screen.dataset.completed = 'true';
+        button.classList.add('door-open');
+        feedback(screen, 'LA PORTA SI APRE.', true);
+        playAudioFor('finale');
+        setTimeout(() => {
+          current = 6;
+          show('finale');
+        }, 1000);
+      } else {
+        button.classList.remove('door-wrong');
+        void button.offsetWidth;
+        button.classList.add('door-wrong');
+        feedback(screen, 'La porta resta chiusa.');
+        setTimeout(() => button.classList.remove('door-wrong'), 500);
+      }
+    });
+  });
 
   const address = 'Via Cadolino 6, Nettuno';
   const mapButton = document.getElementById('mapButton');
   if (mapButton) {
-    mapButton.href =
-      `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+    mapButton.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`;
   }
 
-  const copyButton = document.getElementById('copyAddress');
-  if (copyButton) {
-    copyButton.addEventListener('click', async () => {
-      const status = document.getElementById('copyStatus');
-      try {
-        await navigator.clipboard.writeText(`${address} — ore 22:00`);
-        status.textContent = '✓ INDIRIZZO COPIATO';
-      } catch {
-        status.textContent = address + ' — ore 22:00';
-      }
-    });
-  }
+  document.getElementById('copyAddress')?.addEventListener('click', async () => {
+    const status = document.getElementById('copyStatus');
+    try {
+      await navigator.clipboard.writeText(`${address} — ore 22:00`);
+      if (status) status.textContent = '✓ INDIRIZZO COPIATO';
+    } catch {
+      if (status) status.textContent = `${address} — ore 22:00`;
+    }
+  });
 })();

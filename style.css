@@ -20,3 +20,24 @@ h1,h2{font-family:Cinzel,serif;text-align:center;text-transform:uppercase;letter
 .location-card{border:1px solid rgba(184,155,120,.4);background:rgba(12,9,11,.88);padding:24px 18px;text-align:center;margin:12px 0 18px;box-shadow:0 15px 50px rgba(0,0,0,.35)}.location-card span{display:block;font-size:9px;letter-spacing:.18em;color:#9d8a7c;margin-bottom:14px}.location-card strong{display:block;font-family:Cinzel,serif;font-size:24px;letter-spacing:.04em}.location-card small{display:block;margin-top:10px;color:#b82a34;letter-spacing:.2em;font-weight:600}.final-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.map-button{min-height:50px}.finale{text-align:center}
 @media(max-width:430px){.screen{padding:26px 15px 38px}.topline{font-size:8px}.equations div{font-size:17px}.answer-form{grid-template-columns:1fr}.answer-form .primary{width:100%}.candle-choice{min-height:108px}.candle-choice span{font-size:30px}.final-actions{grid-template-columns:1fr}.symbol-choice{font-size:30px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+
+/* Navigazione indietro */
+.back-button{align-self:flex-start;margin:-15px 0 18px;padding:7px 0;border:0;background:transparent;color:#a99a93;font:600 10px Inter,sans-serif;letter-spacing:.14em;cursor:pointer}
+.back-button:hover,.back-button:focus-visible{color:var(--gold)}
+.acrostic-lines div{justify-content:flex-start;text-align:left;font-family:Inter,system-ui,sans-serif;font-size:13px;line-height:1.55;gap:10px}
+.acrostic-lines div b{min-width:18px;color:var(--gold);font-family:Cinzel,serif;font-size:18px}
+.door-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;max-width:520px;margin:12px auto 16px}
+.door-choice{appearance:none;border:0;background:transparent;padding:0;cursor:pointer;min-width:0;color:var(--text);touch-action:manipulation}
+.door-frame{position:relative;display:flex;min-height:158px;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px solid rgba(184,155,120,.42);border-bottom:5px solid #302329;border-radius:70px 70px 2px 2px;background:linear-gradient(145deg,#261a20,#0a080a 72%);box-shadow:inset 0 0 24px #000,0 10px 22px rgba(0,0,0,.28);transition:transform .25s,border-color .2s,background .35s;overflow:hidden}
+.door-frame:before{content:"";position:absolute;inset:9px 9px 0;border:1px solid rgba(184,155,120,.18);border-radius:60px 60px 0 0;pointer-events:none}
+.door-mark{font-size:32px;color:#c7aa92;text-shadow:0 0 18px rgba(184,155,120,.18)}
+.door-frame small{font-size:9px;letter-spacing:.15em;color:#9c8b85}
+.door-choice:hover .door-frame,.door-choice:focus-visible .door-frame{border-color:var(--red2);transform:translateY(-2px)}
+.door-choice:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.door-choice.door-wrong .door-frame{animation:door-shake .35s ease;border-color:#8d252c}
+.door-choice.door-open .door-frame{transform:perspective(500px) rotateY(-58deg);transform-origin:left center;background:linear-gradient(90deg,#040304,#37232a);border-color:var(--gold);box-shadow:0 0 35px rgba(184,155,120,.25)}
+.door-choice.door-open .door-mark{opacity:0}
+@keyframes door-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media(max-width:430px){.door-grid{gap:9px}.door-frame{min-height:138px}.door-mark{font-size:28px}}
+@media(prefers-reduced-motion:reduce){.door-frame,.door-choice.door-wrong .door-frame{animation:none!important;transition:none!important}}
