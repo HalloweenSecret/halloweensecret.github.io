@@ -77,7 +77,7 @@
   choiceHandler('.shadow-choice');
   choiceHandler('.candle-choice');
 
-  const address = 'Via Cadolino, Nettuno';
+  const address = 'Via Cadolino 6, Nettuno';
   const mapButton = document.getElementById('mapButton');
   mapButton.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
