@@ -6,7 +6,7 @@
 
 /* Keep the lowercase letter l visibly lowercase in the puzzle symbols. */
 .glyph-grid .symbol-choice {
-  font-family: "Trebuchet MS", Arial, sans-serif;
+  font-family: Verdana, Arial, sans-serif;
   font-size: 1.55rem;
   font-weight: 400;
   font-variant: normal;
@@ -17,7 +17,7 @@
 }
 /* Use a typewriter face for the final code so lowercase l is easier to inspect. */
 #enigma-4 .answer-form input {
-  font-family: "Courier New", monospace;
+  font-family: Verdana, Arial, sans-serif;
   font-variant: normal;
   text-transform: none;
   letter-spacing: .025em;
