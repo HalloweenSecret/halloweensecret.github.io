@@ -58,7 +58,7 @@
   const expectedByScreen = {
     'enigma-1': 'MORSET',
     'enigma-2': '7',
-    'enigma-4': 'MORSET7V|||'
+    'enigma-4': 'M7Vlll'
   };
   document.querySelectorAll('.answer-form').forEach(form => {
     form.addEventListener('submit', event => {
