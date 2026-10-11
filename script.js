@@ -56,9 +56,9 @@
 
   // Validate by screen ID, not by form position (the previous version broke here).
   const expectedByScreen = {
-    'enigma-1': 'MORSET',
+    'enigma-1': 'M',
     'enigma-2': '7',
-    'enigma-4': 'M7Vlll'
+    'enigma-4': 'M7V'
   };
   document.querySelectorAll('.answer-form').forEach(form => {
     form.addEventListener('submit', event => {
@@ -111,20 +111,9 @@
   const revealInscription = () => {
     candle?.classList.add('moved');
     inscription?.classList.add('revealed');
+    candle?.closest('.screen')?.classList.add('candle-unlocked');
   };
   if (candle && inscription) {
-    candle.addEventListener('pointerdown', event => {
-      candle.dataset.startX = String(event.clientX);
-      candle.dataset.startY = String(event.clientY);
-      if (event.pointerType === 'mouse' && candle.setPointerCapture) {
-        try { candle.setPointerCapture(event.pointerId); } catch (_) { /* optional */ }
-      }
-    });
-    candle.addEventListener('pointerup', event => {
-      const startX = Number(candle.dataset.startX ?? event.clientX);
-      const startY = Number(candle.dataset.startY ?? event.clientY);
-      if (Math.hypot(event.clientX - startX, event.clientY - startY) > 10) revealInscription();
-    });
     candle.addEventListener('click', revealInscription);
     candle.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {

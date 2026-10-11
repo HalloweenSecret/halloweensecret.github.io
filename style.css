@@ -33,3 +33,8 @@
   vertical-align: baseline;
   text-transform: none;
 }
+
+/* Enigma 1: only the first M changes color after the candle is tapped. */
+#enigma-1 .initial-letter-m { color: inherit; }
+#enigma-1.candle-unlocked .initial-letter-m { color: #b3263e; }
+#enigma-1 .candle-draggable { cursor: pointer; touch-action: manipulation; }
