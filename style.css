@@ -34,7 +34,16 @@
   text-transform: none;
 }
 
-/* Enigma 1: only the first M changes color after the candle is tapped. */
-#enigma-1 .initial-letter-m { color: inherit; }
-#enigma-1.candle-unlocked .initial-letter-m { color: #b3263e; }
-#enigma-1 .candle-draggable { cursor: pointer; touch-action: manipulation; }
+
+/* First enigma: the initial M stays white until the candle is tapped. */
+.corpse-message .first-letter { color: var(--ink); }
+.candle-puzzle.candle-unlocked ~ .answer-form { scroll-margin-top: 1rem; }
+.screen:has(.candle-puzzle.candle-unlocked) .corpse-message .first-letter { color: var(--blood); }
+.candle-draggable { cursor: pointer; touch-action: manipulation; }
+.candle-draggable small { white-space: nowrap; }
+
+/* La M iniziale diventa rossa soltanto dopo il tocco della candela. */
+.corpse-message .first-letter { color: var(--ink); }
+.corpse-message.candle-unlocked .first-letter { color: var(--blood); }
+.candle-puzzle.candle-unlocked { border-style: solid; border-color: var(--blood); }
+.candle-draggable { cursor: pointer; touch-action: manipulation; }

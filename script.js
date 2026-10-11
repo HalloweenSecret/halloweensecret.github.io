@@ -105,13 +105,17 @@
     button.addEventListener('click', () => selectChoice(button, '.door-choice'));
   });
 
-  // The candle works with tap, keyboard, mouse and touch.
+  // The candle is tap/click-only: touching it reveals the inscription and colors only M red.
   const candle = document.getElementById('hiddenCandle');
   const inscription = document.getElementById('hiddenInscription');
+  const candlePuzzle = document.querySelector('.candle-puzzle');
+  const corpseMessage = document.querySelector('#enigma-1 .corpse-message');
   const revealInscription = () => {
     candle?.classList.add('moved');
     inscription?.classList.add('revealed');
-    candle?.closest('.screen')?.classList.add('candle-unlocked');
+    candlePuzzle?.classList.add('candle-unlocked');
+    corpseMessage?.classList.add('candle-unlocked');
+    candle?.setAttribute('aria-label', 'Candela attivata; scritta rivelata');
   };
   if (candle && inscription) {
     candle.addEventListener('click', revealInscription);
